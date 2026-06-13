@@ -1,0 +1,127 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model User{
+  id Int @id @default(autoincrement())
+  name String
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  udatedAt DateTime @updatedAt
+
+  categories Category[]
+  transactions Transaction[]
+  budgets Budget[]
+  goals Goal[]
+  refreshTokens RefreshToken[]
+  aiInsights AiInsight[]
+}
+
+model Category{
+  id Int @id @default(autoincrement())
+  name String
+  userId Int?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  transactions Transaction[]
+  budget Budget[]
+}
+
+model Transaction{
+  id Int @id @default(autoincrement())
+  userId Int 
+  categoryId Int
+  type String
+  amount Int
+  description String?
+  transactionDate DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
+
+  user User @relation(fields: [userId],references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+}
+
+enum Month{
+  January
+  Feburary
+  March
+  April
+  May
+  June
+  July
+  August
+  September
+  October
+  November
+  December
+}
+model Budget{
+  id Int @id @default(autoincrement())
+  userId Int 
+  categoryId Int
+  amount Int
+  month Month
+  year Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
+}
+
+model Goal{
+  id Int @id @default(autoincrement())
+  userId Int
+  title String
+  targetAmount Int
+  currentSavedAmount Int
+  targetDate DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model RefreshToken{
+  id Int @id @default(autoincrement())
+  userId Int
+  token String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+
+enum InsightType{
+  Monthly_Summary
+  Spending_Insight
+  Saving_Recommendation
+  //more suggest more
+}
+
+model AiInsight{
+  id Int @id @default(autoincrement())
+  userId Int
+  type InsightType
+  content String
+  metadata Json
+  generatedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
