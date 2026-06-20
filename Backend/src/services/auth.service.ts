@@ -20,7 +20,7 @@ async function signUp(email: string, password: string, name: string) {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = await createUser(email, hashedPassword, name);
+  const user = await createUser(name, email, hashedPassword);
 
   const accessToken = generateAccessToken(user.id);
   const refreshToken = generateRefreshToken(user.id);
