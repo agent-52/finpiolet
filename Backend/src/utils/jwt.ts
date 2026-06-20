@@ -36,8 +36,8 @@ function verifyRefreshToken(token: string): JwtPayload {
   if (!env.JWT_REFRESH_SECRET) {
     throw new Error("JWT_REFRESH_SECRET not accesseble");
   }
-  const decoded = jwt.verify(token, env.JWT_REFRESH_SECRET) as JwtPayload;
 
+  const decoded = jwt.verify(token, env.JWT_REFRESH_SECRET) as JwtPayload;
   return decoded;
 }
 

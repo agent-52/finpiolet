@@ -24,6 +24,7 @@ model User{
   password String?
   provider AuthProvider @default(LOCAL)
   providerId String?
+  avatarUrl String?
   createdAt DateTime @default(now())
   udatedAt DateTime @updatedAt
 
