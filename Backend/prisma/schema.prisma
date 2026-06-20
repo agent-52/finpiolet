@@ -5,19 +5,25 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
+enum AuthProvider{
+  LOCAL
+  GOOGLE
+}
 
 model User{
   id Int @id @default(autoincrement())
   name String
   email String @unique
-  password String
+  password String?
+  provider AuthProvider @default(LOCAL)
+  providerId String?
   createdAt DateTime @default(now())
   udatedAt DateTime @updatedAt
 
@@ -100,7 +106,7 @@ model Goal{
 model RefreshToken{
   id Int @id @default(autoincrement())
   userId Int
-  token String
+  token String @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
 
