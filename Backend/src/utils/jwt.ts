@@ -1,5 +1,6 @@
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { env } from "../config/env";
+import { storeRefreshToken } from "../repositories/auth.repository";
 
 type JwtPayload = { userId: number };
 
@@ -41,9 +42,22 @@ function verifyRefreshToken(token: string): JwtPayload {
   return decoded;
 }
 
+async function createAuthSession(userId: number) {
+  const accessToken = generateAccessToken(userId);
+  const refreshToken = generateRefreshToken(userId);
+  const expiryDate = new Date();
+  expiryDate.setDate(expiryDate.getDate() + 7);
+  await storeRefreshToken(userId, refreshToken, expiryDate);
+
+  return {
+    accessToken,
+    refreshToken,
+  };
+}
 export {
   generateAccessToken,
   generateRefreshToken,
   verifyAccessToken,
   verifyRefreshToken,
+  createAuthSession,
 };

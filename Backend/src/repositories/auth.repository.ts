@@ -30,7 +30,7 @@ async function findUserById(id: number) {
 async function createUser(
   name: string,
   email: string,
-  password: string,
+  password: string | null,
   provider: AuthProvider = "LOCAL",
   providerId: string | null = null,
 ) {
@@ -99,6 +99,25 @@ async function deleteRefreshToken(token: string) {
   }
 }
 
+async function updateUserProvider(
+  email: string,
+  provider: AuthProvider,
+  providerId: string,
+  avatarUrl?: string,
+) {
+  const updatedUser = await prisma.user.update({
+    where: {
+      email,
+    },
+    data: {
+      provider,
+      providerId,
+      avatarUrl: avatarUrl ? avatarUrl : null,
+    },
+  });
+
+  return updatedUser;
+}
 export {
   findUserByEmail,
   findUserById,
@@ -107,4 +126,5 @@ export {
   storeRefreshToken,
   findRefreshTokenn,
   deleteRefreshToken,
+  updateUserProvider,
 };

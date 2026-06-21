@@ -4,13 +4,16 @@ import {
   findRefreshTokenn,
   findUserByEmail,
   storeRefreshToken,
+  updateUserProvider,
 } from "../repositories/auth.repository";
 import * as bcrypt from "bcrypt";
 import {
+  createAuthSession,
   generateAccessToken,
   generateRefreshToken,
   verifyRefreshToken,
 } from "../utils/jwt";
+import { verifyGoogleToken } from "../utils/google";
 
 async function signUp(email: string, password: string, name: string) {
   const userExists = await findUserByEmail(email);
@@ -97,4 +100,57 @@ async function logout(refreshToken: string) {
   await deleteRefreshToken(refreshToken);
 }
 
-export { signUp, signIn, RefreshAccessToken, logout };
+async function googleAuthService(googleToken: string) {
+  const googlePayload = await verifyGoogleToken(googleToken);
+  if (!googlePayload.email) {
+    throw new Error("no email found in google payload");
+  }
+  const userExists = await findUserByEmail(googlePayload.email);
+
+  if (userExists && userExists.provider == "LOCAL") {
+    const updatedUser = await updateUserProvider(
+      googlePayload.email,
+      "GOOGLE",
+      googlePayload.sub,
+      googlePayload.picture,
+    );
+
+    const authSession = await createAuthSession(userExists.id);
+
+    return {
+      user: userExists,
+      ...authSession,
+    };
+  }
+
+  if (!googlePayload.name) {
+    throw new Error("no name found in google payload");
+  }
+
+  if (!userExists) {
+    const user = await createUser(
+      googlePayload.name,
+      googlePayload.email,
+      null,
+      "GOOGLE",
+      googlePayload.sub,
+    );
+
+    const authSession = await createAuthSession(user.id);
+
+    return {
+      user,
+      ...authSession,
+    };
+  }
+
+  if (userExists && userExists.provider == "GOOGLE") {
+    const authSession = await createAuthSession(userExists.id);
+    return {
+      user: userExists,
+      ...authSession,
+    };
+  }
+}
+
+export { signUp, signIn, RefreshAccessToken, logout, googleAuthService };
