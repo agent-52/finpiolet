@@ -1,6 +1,6 @@
 import { prisma } from "../config/prisma";
 
-async function getCategories(userId?: number) {
+async function repoGetCategories(userId?: number) {
   const categrories = await prisma.category.findMany({
     where: {
       OR: [{ userId: null }, { userId: userId ? userId : null }],
@@ -9,7 +9,7 @@ async function getCategories(userId?: number) {
   return categrories;
 }
 
-async function createCategory(name: string, userId?: number) {
+async function repoCreateCategory(name: string, userId?: number) {
   const category = await prisma.category.create({
     data: {
       userId: userId ? userId : null,
@@ -20,7 +20,7 @@ async function createCategory(name: string, userId?: number) {
   return category;
 }
 
-async function updateCategory(id: number, newName: string) {
+async function repoUpdateCategory(id: number, newName: string) {
   const updatedCategory = await prisma.category.update({
     where: {
       id,
@@ -33,7 +33,7 @@ async function updateCategory(id: number, newName: string) {
   return updatedCategory;
 }
 
-async function deleteCategory(id: number) {
+async function repoDeleteCategory(id: number) {
   const deletedCategory = await prisma.category.delete({
     where: {
       id,
@@ -53,10 +53,22 @@ async function findCategoryById(id: number) {
   return category;
 }
 
+async function repoFindCategoryByName(userId: number, name: string) {
+  const category = await prisma.category.findFirst({
+    where: {
+      userId,
+      name,
+    },
+  });
+
+  return category;
+}
+
 export {
   findCategoryById,
-  deleteCategory,
-  updateCategory,
-  createCategory,
-  getCategories,
+  repoDeleteCategory,
+  repoUpdateCategory,
+  repoCreateCategory,
+  repoGetCategories,
+  repoFindCategoryByName,
 };
