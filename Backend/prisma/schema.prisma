@@ -48,11 +48,15 @@ model Category{
   budget Budget[]
 }
 
+enum TransactionType{
+  INCOME
+  EXPENSE
+}
 model Transaction{
   id Int @id @default(autoincrement())
   userId Int 
   categoryId Int
-  type String
+  type TransactionType
   amount Int
   description String?
   transactionDate DateTime
