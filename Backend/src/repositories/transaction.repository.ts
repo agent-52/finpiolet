@@ -1,4 +1,6 @@
 import { prisma } from "../config/prisma";
+import { TransactionQueryObject } from "../controllers/transaction.controller";
+import { Prisma } from "../generated/prisma/client";
 import { TransactionType } from "../generated/prisma/enums";
 
 async function createTransaction(
@@ -51,19 +53,80 @@ async function findTransactionById(transactionId: number) {
   return transaction;
 }
 
-async function getTransactions(userId: number) {
-  //pagination, search, filters bhi lagana hai
-
-  const transactions = await prisma.transaction.findMany({
+async function getTransactions(
+  userId: number,
+  queryObject: TransactionQueryObject,
+) {
+  const totalTransactions = await prisma.transaction.count({
     where: {
       userId,
-    },
-    orderBy: {
-      transactionDate: "desc",
+      ...(queryObject.categoryId && {
+        categoryId: Number(queryObject.categoryId),
+      }),
+      ...(queryObject.search && {
+        description: {
+          contains: queryObject.search,
+          mode: "insensitive",
+        },
+      }),
+      ...(queryObject.type && { type: queryObject.type }),
+      ...(queryObject.startDate && {
+        transactionDate: {
+          gte: queryObject.startDate,
+        },
+      }),
     },
   });
 
-  return transactions;
+  let orderBy: Prisma.TransactionOrderByWithRelationInput;
+
+  switch (queryObject.sortBy) {
+    case "amount":
+      orderBy = {
+        amount: queryObject.sortOrder === "asc" ? "asc" : "desc",
+      };
+      break;
+
+    case "createdAt":
+      orderBy = {
+        createdAt: queryObject.sortOrder === "asc" ? "asc" : "desc",
+      };
+      break;
+
+    default:
+      orderBy = {
+        transactionDate: queryObject.sortOrder === "asc" ? "asc" : "desc",
+      };
+  }
+  const transactions = await prisma.transaction.findMany({
+    where: {
+      userId,
+      ...(queryObject.categoryId && {
+        categoryId: Number(queryObject.categoryId),
+      }),
+      ...(queryObject.search && {
+        description: {
+          contains: queryObject.search,
+          mode: "insensitive",
+        },
+      }),
+      ...(queryObject.type && { type: queryObject.type }),
+      ...(queryObject.startDate &&
+        queryObject.endDate && {
+          transactionDate: {
+            gte: new Date(queryObject.startDate),
+            lte: new Date(queryObject.endDate),
+          },
+        }),
+    },
+    orderBy,
+    take: Number(queryObject.limit) ? Number(queryObject.limit) : 10,
+    skip: Number(queryObject.page)
+      ? (Number(queryObject.page) - 1) * Number(queryObject.limit)
+      : 0,
+  });
+
+  return { transactions, totalTransactions };
 }
 
 export default {

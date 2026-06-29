@@ -1,4 +1,5 @@
 import { prisma } from "../config/prisma";
+import { TransactionQueryObject } from "../controllers/transaction.controller";
 import { TransactionType } from "../generated/prisma/enums";
 import { findCategoryById } from "../repositories/category.repository";
 import repository from "../repositories/transaction.repository";
@@ -94,10 +95,16 @@ async function deleteTransaction(transactionId: number, userId: number) {
   return deletedTransaction;
 }
 
-async function getTransactions(userId: number) {
-  const transactions = await repository.getTransactions(userId);
+async function getTransactions(
+  userId: number,
+  queryObject: TransactionQueryObject,
+) {
+  const { transactions, totalTransactions } = await repository.getTransactions(
+    userId,
+    queryObject,
+  );
 
-  return transactions;
+  return { transactions, totalTransactions };
 }
 
 export {

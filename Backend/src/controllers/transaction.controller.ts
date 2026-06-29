@@ -5,6 +5,7 @@ import {
   getTransactions,
   updateTransaction,
 } from "../services/transaction.service";
+import { TransactionType } from "../generated/prisma/enums";
 
 const createTransactionController = async (req: Request, res: Response) => {
   const userId = req.user?.userId;
@@ -94,12 +95,35 @@ const getTransactionsController = async (req: Request, res: Response) => {
       message: "userId not found",
     });
   }
-  const transactions = await getTransactions(userId);
+  const queryObject = req.query as TransactionQueryObject;
+
+  const { transactions, totalTransactions } = await getTransactions(
+    userId,
+    queryObject,
+  );
   return res.status(200).json({
     success: true,
+    page: queryObject.page,
+    limit: queryObject.limit,
+    total: totalTransactions,
     transactions,
   });
 };
+
+export type TransactionQueryObject = {
+  page?: string;
+  limit?: string;
+  search?: string;
+  type?: TransactionType;
+  categoryId?: string;
+
+  startDate?: string;
+  endDate?: string;
+
+  sortBy?: "amount" | "transactionDate" | "createdAt";
+  sortOrder?: "asc" | "desc";
+};
+
 export {
   createTransactionController,
   updateTransactionController,
