@@ -65,3 +65,11 @@ async function getTransactions(userId: number) {
 
   return transactions;
 }
+
+export default {
+  getTransactions,
+  createTransaction,
+  updateTransaction,
+  deleteTransaction,
+  findTransactionById,
+};
