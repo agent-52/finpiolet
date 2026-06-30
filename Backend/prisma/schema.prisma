@@ -36,12 +36,16 @@ model User{
   aiInsights AiInsight[]
 }
 
+enum CategoryType{
+  INCOME
+  EXPENSE
+}
 model Category{
   id Int @id @default(autoincrement())
   name String
   userId Int?
   createdAt DateTime @default(now())
-
+  type CategoryType
   user User? @relation(fields: [userId], references: [id])
 
   transactions Transaction[]

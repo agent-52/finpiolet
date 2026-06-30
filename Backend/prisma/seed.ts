@@ -5,26 +5,33 @@ async function main() {
     data: [
       {
         name: "Food",
+        type: "EXPENSE",
       },
-      { name: "Travel" },
-      { name: "Shopping" },
+      { name: "Travel", type: "EXPENSE" },
+      { name: "Shopping", type: "EXPENSE" },
       {
         name: "Bills",
+        type: "EXPENSE",
       },
       {
         name: "Entertainment",
+        type: "EXPENSE",
       },
       {
         name: "Health",
+        type: "EXPENSE",
       },
       {
         name: "Education",
+        type: "EXPENSE",
       },
       {
         name: "Salary",
+        type: "INCOME",
       },
       {
         name: "Investment",
+        type: "EXPENSE",
       },
     ],
   });
