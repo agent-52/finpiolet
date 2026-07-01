@@ -30,7 +30,7 @@ async function updateBudget(budgetId: number, amount: number) {
     },
   });
 
-  return updateBudget;
+  return updatedBudget;
 }
 
 async function deleteBudget(budgetId: number) {
@@ -40,7 +40,7 @@ async function deleteBudget(budgetId: number) {
     },
   });
 
-  return deleteBudget;
+  return deletedBudget;
 }
 
 async function findBudgetById(budgetId: number) {
@@ -74,6 +74,9 @@ async function getBudgets(userId: number) {
   const budgets = await prisma.budget.findMany({
     where: {
       userId,
+    },
+    include: {
+      category: true,
     },
   });
   return budgets;
