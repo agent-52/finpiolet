@@ -1,7 +1,7 @@
 import { prisma } from "../config/prisma";
 import { TransactionQueryObject } from "../controllers/transaction.controller";
 import { Prisma } from "../generated/prisma/client";
-import { TransactionType } from "../generated/prisma/enums";
+import { Month, TransactionType } from "../generated/prisma/enums";
 
 async function createTransaction(
   userId: number,

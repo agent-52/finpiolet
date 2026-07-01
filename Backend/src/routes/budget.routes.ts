@@ -4,6 +4,7 @@ import {
   createBudgetController,
   deleteBudgetController,
   getBudgetsController,
+  getBudgetUsageController,
   updateBudgetController,
 } from "../controllers/budget.controller";
 
@@ -16,3 +17,5 @@ budgetRouter.post("/", authMiddleware, createBudgetController);
 budgetRouter.patch("/:id", authMiddleware, updateBudgetController);
 
 budgetRouter.delete("/:id", authMiddleware, deleteBudgetController);
+
+budgetRouter.get("/:id/usage", authMiddleware, getBudgetUsageController);

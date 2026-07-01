@@ -6,6 +6,7 @@ import {
   getBudgets,
   updateBudget,
 } from "../services/budget.service";
+import calculateBudgetUsage from "../services/budget.engine";
 
 const createBudgetController = async (req: Request, res: Response) => {
   const userId = Number(req.user?.userId);
@@ -76,9 +77,27 @@ const getBudgetsController = async (req: Request, res: Response) => {
   });
 };
 
+const getBudgetUsageController = async (req: Request, res: Response) => {
+  const userId = Number(req.user?.userId);
+  const { id } = req.params;
+  const budgetId = Number(id);
+  if (isNaN(budgetId)) {
+    return res.status(400).json({
+      message: "not a valid budgetId it must be a number",
+    });
+  }
+
+  const budgetUsage = await calculateBudgetUsage(userId, budgetId);
+  return res.status(200).json({
+    success: true,
+    budgetUsage,
+  });
+};
+
 export {
   createBudgetController,
   updateBudgetController,
   deleteBudgetController,
   getBudgetsController,
+  getBudgetUsageController,
 };
