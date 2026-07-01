@@ -1,4 +1,4 @@
-import { Month } from "../generated/prisma/enums";
+import { CategoryType, Month } from "../generated/prisma/enums";
 import repo from "../repositories/budget.repository";
 import { findCategoryById } from "../repositories/category.repository";
 
@@ -17,9 +17,9 @@ async function createBudget(
     throw new Error("no such category exist with this category id");
   }
   if (category.userId && category.userId != userId) {
-    throw new Error("UnAuthorized");
+    throw new Error("user is not authorized for this action");
   }
-  if (category.type == "INCOME") {
+  if (category.type == CategoryType.INCOME) {
     throw new Error("budgets are only for expense categories");
   }
 
