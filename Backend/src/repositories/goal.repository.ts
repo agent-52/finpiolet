@@ -1,4 +1,5 @@
 import { prisma } from "../config/prisma";
+import { goalUpdateType } from "../types/goal";
 
 async function createGoal(
   userId: number,
@@ -19,15 +20,7 @@ async function createGoal(
   return goal;
 }
 
-async function updateGoal(
-  goalId: number,
-  goalUpdates: {
-    title: string;
-    targetAmount: number;
-    currentSavedAmount: number;
-    targetDate: Date;
-  },
-) {
+async function updateGoal(goalId: number, goalUpdates: goalUpdateType) {
   const updatedGoal = await prisma.goal.update({
     where: {
       id: goalId,
@@ -55,7 +48,7 @@ async function findGoalById(goalId: number) {
     },
   });
 
-  return goalId;
+  return goal;
 }
 
 async function getGoals(userId: number) {
