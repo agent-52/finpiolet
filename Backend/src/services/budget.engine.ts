@@ -4,6 +4,7 @@ import budgetRepo from "../repositories/budget.repository";
 import { monthMap } from "../utils/date";
 
 export type BudgetStatus = "SAFE" | "WARNING" | "EXCEEDED";
+
 async function calculateBudgetUsage(userId: number, budgetId: number) {
   const budget = await budgetRepo.findBudgetById(budgetId);
   if (!budget) {
