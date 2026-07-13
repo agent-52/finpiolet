@@ -6,6 +6,7 @@ import {
   updateGoal,
 } from "../services/goal.service";
 import { goalUpdateType } from "../repositories/goal.repository";
+import { calculateGoalPlan } from "../services/goal.engine";
 
 const createGoalController = async (req: Request, res: Response) => {
   const userId = Number(req.user?.userId);
@@ -88,9 +89,36 @@ const getGoalsController = async (req: Request, res: Response) => {
     goals,
   });
 };
+
+const getGoalPlanController = async (req: Request, res: Response) => {
+  const userId = Number(req.user?.userId);
+  const { id } = req.params;
+  const goalId = Number(id)
+  if(isNaN(goalId)){
+    return res.status(400).json({
+      message: "invalid goal id , it must be a number",
+    })
+  }
+  const goalPlan = await calculateGoalPlan(userId, goalId);
+  return res.status(200).json({
+    success:true,
+    goalPlan:{
+      goal:goalPlan.goal.title,
+      targetAmount:goalPlan.goal.targetAmount,
+      savedAmount:goalPlan.goal.currentSavedAmount,
+      remainingAmount:goalPlan.remainingAmount,
+      progressPercentage:goalPlan.currentProgress,
+      monthsRemaining:goalPlan.remainingMonths,
+      requiredMonthlySaving:goalPlan.requiredMonthlySavings,
+      status:goalPlan.goalStatus
+    }
+
+  })
+};
 export {
   createGoalController,
   updateGoalController,
   deleteGoalController,
   getGoalsController,
+  getGoalPlanController
 };
