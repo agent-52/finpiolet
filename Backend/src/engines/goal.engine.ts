@@ -1,6 +1,6 @@
 import goalRepository from "../repositories/goal.repository";
 
-enum GoalStatus {
+export enum GoalStatus {
   COMPLETED = "COMPLETED",
   IN_PROGRESS = "IN_PROGRESS",
   ON_TRACK = "ON_TRACK",

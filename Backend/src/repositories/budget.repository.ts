@@ -78,6 +78,9 @@ async function getBudgets(userId: number) {
     include: {
       category: true,
     },
+    orderBy:{
+      createdAt:"desc"
+    }
   });
   return budgets;
 }

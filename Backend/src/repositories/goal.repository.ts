@@ -56,6 +56,9 @@ async function getGoals(userId: number) {
     where: {
       userId,
     },
+    orderBy:{
+      createdAt:"desc"
+    }
   });
 
   return goals;

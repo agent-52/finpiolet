@@ -5,8 +5,8 @@ import {
   getGoals,
   updateGoal,
 } from "../services/goal.service";
-import { goalUpdateType } from "../repositories/goal.repository";
-import { calculateGoalPlan } from "../services/goal.engine";
+import { goalUpdateType } from "../types/goal";
+import { calculateGoalPlan } from "../engines/goal.engine";
 
 const createGoalController = async (req: Request, res: Response) => {
   const userId = Number(req.user?.userId);
