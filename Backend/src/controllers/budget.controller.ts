@@ -6,7 +6,7 @@ import {
   getBudgets,
   updateBudget,
 } from "../services/budget.service";
-import calculateBudgetUsage from "../services/budget.engine";
+import calculateBudgetUsage from "../engines/budget.engine";
 
 const createBudgetController = async (req: Request, res: Response) => {
   const userId = Number(req.user?.userId);
