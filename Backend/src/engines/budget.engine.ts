@@ -1,6 +1,7 @@
 import { TransactionType } from "../generated/prisma/enums";
 import { getTransactionsByCategoryAndMonth } from "../repositories/analytics.repository";
 import budgetRepo from "../repositories/budget.repository";
+import { ApiError } from "../utils/ApiError";
 import { monthMap } from "../utils/date";
 
 export type BudgetStatus = "SAFE" | "WARNING" | "EXCEEDED";
@@ -8,10 +9,10 @@ export type BudgetStatus = "SAFE" | "WARNING" | "EXCEEDED";
 async function calculateBudgetUsage(userId: number, budgetId: number) {
   const budget = await budgetRepo.findBudgetById(budgetId);
   if (!budget) {
-    throw new Error("no budget exist with this budget id");
+    throw new ApiError(404, "no budget exist with this budget id");
   }
   if (budget.userId !== userId) {
-    throw new Error("Unauthorized ");
+    throw new ApiError(403, "Unauthorized ");
   }
   //all expenses in that category in that month , year by that user
 

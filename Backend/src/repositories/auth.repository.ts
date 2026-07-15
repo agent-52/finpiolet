@@ -1,5 +1,6 @@
 import { prisma } from "../config/prisma";
 import { AuthProvider } from "../generated/prisma/enums";
+import { ApiError } from "../utils/ApiError";
 
 async function findUserByEmail(email: string) {
   try {
@@ -10,7 +11,7 @@ async function findUserByEmail(email: string) {
     });
     return user;
   } catch (error) {
-    throw new Error("Error in running findUserByEmail function");
+    throw new ApiError(500,"Error in running findUserByEmail function");
   }
 }
 
@@ -23,7 +24,7 @@ async function findUserById(id: number) {
     });
     return user;
   } catch (error) {
-    throw new Error("Error in running findUserById function");
+    throw new ApiError(500, "Error in running findUserById function");
   }
 }
 
@@ -46,7 +47,7 @@ async function createUser(
     });
     return user;
   } catch (error) {
-    throw new Error("Error in running createUser function");
+    throw new ApiError(500, "Error in running createUser function");
   }
 }
 
@@ -59,7 +60,7 @@ async function findUserByProviderId(providerId: string) {
     });
     return user;
   } catch (error) {
-    throw new Error("Error in running findUserByProviderId function");
+    throw new ApiError(500, "Error in running findUserByProviderId function");
   }
 }
 
@@ -95,7 +96,7 @@ async function deleteRefreshToken(token: string) {
       },
     });
   } catch (error) {
-    throw new Error("Error in running deleteRefreshToken function");
+    throw new ApiError(500, "Error in running deleteRefreshToken function");
   }
 }
 

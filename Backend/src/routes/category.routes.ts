@@ -6,13 +6,14 @@ import {
   updateCategoryController,
 } from "../controllers/category.controller";
 import { authMiddleware } from "../middleware/auth.middleware";
+import { asyncHandler } from "../utils/asyncHandler";
 
 const categoryRouter = Router();
 
-categoryRouter.get("/", authMiddleware, getCategoriesController);
+categoryRouter.get("/", authMiddleware, asyncHandler(getCategoriesController) );
 
-categoryRouter.post("/", authMiddleware, createCategoryController);
+categoryRouter.post("/", authMiddleware, asyncHandler(createCategoryController));
 
-categoryRouter.patch("/:id", authMiddleware, updateCategoryController);
+categoryRouter.patch("/:id", authMiddleware, asyncHandler(updateCategoryController));
 
-categoryRouter.delete("/:id", authMiddleware, deleteCategoryController);
+categoryRouter.delete("/:id", authMiddleware, asyncHandler(deleteCategoryController));

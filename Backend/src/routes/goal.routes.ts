@@ -7,11 +7,11 @@ import {
   getGoalsController,
   updateGoalController,
 } from "../controllers/goal.controller";
-
+import { asyncHandler } from "../utils/asyncHandler";
 export const goalRouter = Router();
 
-goalRouter.post("/", authMiddleware, createGoalController);
-goalRouter.patch("/:id", authMiddleware, updateGoalController);
-goalRouter.delete("/:id", authMiddleware, deleteGoalController);
-goalRouter.get("/", authMiddleware, getGoalsController);
-goalRouter.get("/:id/plan", authMiddleware, getGoalPlanController )
+goalRouter.post("/", authMiddleware, asyncHandler(createGoalController));
+goalRouter.patch("/:id", authMiddleware, asyncHandler(updateGoalController));
+goalRouter.delete("/:id", authMiddleware, asyncHandler(deleteGoalController));
+goalRouter.get("/", authMiddleware, asyncHandler(getGoalsController));
+goalRouter.get("/:id/plan", authMiddleware, asyncHandler(getGoalPlanController ))

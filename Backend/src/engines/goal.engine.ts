@@ -1,4 +1,5 @@
 import goalRepository from "../repositories/goal.repository";
+import { ApiError } from "../utils/ApiError";
 
 export enum GoalStatus {
   COMPLETED = "COMPLETED",
@@ -9,10 +10,10 @@ export enum GoalStatus {
 async function calculateGoalPlan(userId: number, goalId: number) {
   const goal = await goalRepository.findGoalById(goalId);
   if (!goal) {
-    throw new Error("no goal exist with this goal id");
+    throw new ApiError(404, "no goal exist with this goal id");
   }
   if (goal.userId != userId) {
-    throw new Error("user unauthorized for this action");
+    throw new ApiError(403, "user unauthorized for this action");
   }
   const remainingAmount = goal.targetAmount - goal.currentSavedAmount;
   const today = new Date()

@@ -4,6 +4,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import { errorHandlerMiddleware } from "./middleware/error.middleware";
 
 const app = express();
 
@@ -20,4 +21,6 @@ app.get("/health", (req, res) => {
     message: "FinPilot API running",
   });
 });
+
+app.use(errorHandlerMiddleware)
 export default app;

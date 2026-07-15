@@ -3,6 +3,7 @@ import { TransactionQueryObject } from "../controllers/transaction.controller";
 import { TransactionType } from "../generated/prisma/enums";
 import { findCategoryById } from "../repositories/category.repository";
 import repository from "../repositories/transaction.repository";
+import { ApiError } from "../utils/ApiError";
 
 async function createTransaction(
   userId: number,
@@ -13,15 +14,15 @@ async function createTransaction(
   description?: string,
 ) {
   if (amount <= 0) {
-    throw new Error("amount must be more than zero");
+    throw new ApiError(400, "amount must be more than zero");
   }
   const category = await findCategoryById(categoryId);
   if (!category) {
-    throw new Error("category does not exist");
+    throw new ApiError(404, "category does not exist");
   }
   if (category.userId != null && category.userId != userId) {
-    throw new Error(
-      "user is not authorized for a transaction in this category",
+    throw new ApiError(
+      403, "user is not authorized for a transaction in this category",
     );
   }
 
@@ -32,7 +33,7 @@ async function createTransaction(
   const convertedTransactionDate = new Date(transactionDate);
 
   if (transactionDate > today) {
-    throw new Error("future transactions are not valid");
+    throw new ApiError(400, "future transactions are not valid");
   }
 
   const transaction = await repository.createTransaction(
@@ -55,21 +56,21 @@ async function updateTransaction(
   const transaction = await repository.findTransactionById(transactionId);
 
   if (!transaction) {
-    throw new Error("transaction with this id does not exist");
+    throw new ApiError(404, "transaction with this id does not exist");
   }
   if (transaction.userId != userId) {
-    throw new Error("user is not authorized for updating this transaction");
+    throw new ApiError(403, "user is not authorized for updating this transaction");
   }
 
   //update data validation checks
   if (data.amount && data.amount <= 0) {
-    throw new Error("amount must be greater than 0");
+    throw new ApiError(400, "amount must be greater than 0");
   }
 
   if (data.categoryId) {
     const category = await findCategoryById(data.categoryId);
     if (!category) {
-      throw new Error("category id is invalid");
+      throw new ApiError(400, "category id is invalid");
     }
   }
   const updatedTransaction = await repository.updateTransaction(
@@ -84,10 +85,10 @@ async function deleteTransaction(transactionId: number, userId: number) {
   const transaction = await repository.findTransactionById(transactionId);
 
   if (!transaction) {
-    throw new Error("transaction with this id does not exist");
+    throw new ApiError(400, "transaction with this id does not exist");
   }
   if (transaction.userId != userId) {
-    throw new Error("user is not authorized for deleting this transaction");
+    throw new ApiError(403, "user is not authorized for deleting this transaction");
   }
 
   const deletedTransaction = await repository.deleteTransaction(transactionId);

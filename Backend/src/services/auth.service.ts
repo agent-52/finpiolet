@@ -14,11 +14,12 @@ import {
   verifyRefreshToken,
 } from "../utils/jwt";
 import { verifyGoogleToken } from "../utils/google";
+import { ApiError } from "../utils/ApiError";
 
 async function signUp(email: string, password: string, name: string) {
   const userExists = await findUserByEmail(email);
   if (userExists) {
-    throw new Error("Account with this email already present , please signin");
+    throw new ApiError(400, "Account with this email already present , please signin");
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -44,21 +45,21 @@ async function signIn(email: string, password: string) {
   const user = await findUserByEmail(email);
 
   if (!user) {
-    throw new Error("no user found with this email , please signup first");
+    throw new ApiError(404, "no user found with this email , please signup first");
   }
 
   if (user.provider == "GOOGLE") {
-    throw new Error("This account uses Google sign in");
+    throw new ApiError(400,"This account uses Google sign in");
   }
 
   if (!user.password) {
-    throw new Error("Account configuration error : no password found");
+    throw new ApiError(400, "Account configuration error : no password found");
   }
 
   const passwordMatched = await bcrypt.compare(password, user.password);
 
   if (!passwordMatched) {
-    throw new Error("invalid password");
+    throw new ApiError(400, "invalid password");
   }
 
   const accessToken = generateAccessToken(user.id);
@@ -80,12 +81,12 @@ async function RefreshAccessToken(refreshToken: string) {
   try {
     verifyRefreshToken(refreshToken);
   } catch {
-    throw new Error("Unauthorized");
+    throw new ApiError(401, "Unauthorized");
   }
   const userId = verifyRefreshToken(refreshToken).userId;
   const tokenExist = await findRefreshTokenn(refreshToken);
   if (!tokenExist) {
-    throw new Error("unauthorized");
+    throw new ApiError(401, "unauthorized");
   }
   const accessToken = generateAccessToken(userId);
 
@@ -95,7 +96,7 @@ async function RefreshAccessToken(refreshToken: string) {
 async function logout(refreshToken: string) {
   const tokenExists = await findRefreshTokenn(refreshToken);
   if (!tokenExists) {
-    throw new Error("no token exists ");
+    throw new ApiError(401, "no token exists ");
   }
   await deleteRefreshToken(refreshToken);
 }
@@ -103,7 +104,7 @@ async function logout(refreshToken: string) {
 async function googleAuthService(googleToken: string) {
   const googlePayload = await verifyGoogleToken(googleToken);
   if (!googlePayload.email) {
-    throw new Error("no email found in google payload");
+    throw new ApiError(404, "no email found in google payload");
   }
   const userExists = await findUserByEmail(googlePayload.email);
 
@@ -124,7 +125,7 @@ async function googleAuthService(googleToken: string) {
   }
 
   if (!googlePayload.name) {
-    throw new Error("no name found in google payload");
+    throw new ApiError(404, "no name found in google payload");
   }
 
   if (!userExists) {

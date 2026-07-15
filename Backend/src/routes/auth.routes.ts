@@ -7,15 +7,16 @@ import {
   signinController,
   signupController,
 } from "../controllers/auth.controller";
+import { asyncHandler } from "../utils/asyncHandler";
 
 export const authRouter = Router();
 
-authRouter.get("/me", authMiddleware, getCurrentUser);
+authRouter.get("/me", authMiddleware, asyncHandler(getCurrentUser) );
 
-authRouter.post("/signup", signupController);
+authRouter.post("/signup", asyncHandler(signupController));
 
-authRouter.post("/signin", signinController);
+authRouter.post("/signin", asyncHandler(signinController));
 
-authRouter.post("/refresh", refreshController);
+authRouter.post("/refresh", asyncHandler(refreshController));
 
-authRouter.post("/logout", logoutController);
+authRouter.post("/logout", asyncHandler(logoutController));

@@ -1,12 +1,13 @@
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { env } from "../config/env";
 import { storeRefreshToken } from "../repositories/auth.repository";
+import { ApiError } from "./ApiError";
 
 type JwtPayload = { userId: number };
 
 function generateAccessToken(userId: number): string {
   if (!env.JWT_SECRET) {
-    throw new Error("JWT_SECRET not accesseble");
+    throw new ApiError(500,"JWT_SECRET not accesseble");
   }
   const accessToken = jwt.sign({ userId: userId }, env.JWT_SECRET, {
     expiresIn: "20m",
@@ -16,7 +17,7 @@ function generateAccessToken(userId: number): string {
 
 function generateRefreshToken(userId: number): string {
   if (!env.JWT_REFRESH_SECRET) {
-    throw new Error("JWT_REFRESH_SECRET not accesseble");
+    throw new ApiError(500, "JWT_REFRESH_SECRET not accesseble");
   }
   const refreshToken = jwt.sign({ userId }, env.JWT_REFRESH_SECRET, {
     expiresIn: "7d",
@@ -27,7 +28,7 @@ function generateRefreshToken(userId: number): string {
 
 function verifyAccessToken(token: string): JwtPayload {
   if (!env.JWT_SECRET) {
-    throw new Error("JWT_SECRET not accesseble");
+    throw new ApiError(500, "JWT_SECRET not accesseble");
   }
   const decoded = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
   return decoded;
@@ -35,7 +36,7 @@ function verifyAccessToken(token: string): JwtPayload {
 
 function verifyRefreshToken(token: string): JwtPayload {
   if (!env.JWT_REFRESH_SECRET) {
-    throw new Error("JWT_REFRESH_SECRET not accesseble");
+    throw new ApiError(500, "JWT_REFRESH_SECRET not accesseble");
   }
 
   const decoded = jwt.verify(token, env.JWT_REFRESH_SECRET) as JwtPayload;
