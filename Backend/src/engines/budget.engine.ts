@@ -1,5 +1,5 @@
 import { TransactionType } from "../generated/prisma/enums";
-import { getTransactionsByCategoryAndMonth } from "../repositories/analytics.repository";
+import analyticsRepository from "../repositories/analytics.repository";
 import budgetRepo from "../repositories/budget.repository";
 import { ApiError } from "../utils/ApiError";
 import { monthMap } from "../utils/date";
@@ -17,7 +17,7 @@ async function calculateBudgetUsage(userId: number, budgetId: number) {
   //all expenses in that category in that month , year by that user
 
   const month = monthMap[budget.month];
-  const transactions = await getTransactionsByCategoryAndMonth(
+  const transactions = await analyticsRepository.getTransactionsByCategoryAndMonth(
     userId,
     budget.categoryId,
     month,
@@ -25,7 +25,7 @@ async function calculateBudgetUsage(userId: number, budgetId: number) {
   );
 
   let expenseSum = 0;
-  transactions.forEach((t) => {
+  transactions.forEach((t:any) => {
     expenseSum += t.amount;
   });
   const remainingBudget = budget.amount - expenseSum;
