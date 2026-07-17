@@ -16,8 +16,8 @@ export async function getAnalytics(userId:number) {
 
     
     const categoryBreakdown = await Promise.all(
-        categoryWiseSpend.map((category) => {
-            const categoryName = findCategoryById(category.categoryId).then((c) => c?.name)
+        categoryWiseSpend.map(async (category) => {
+            const categoryName = await findCategoryById(category.categoryId).then((c) => c?.name)
             const percentage = (category.amount && totalExpense)?((category.amount/totalExpense)*100).toFixed(2):0
 
             return {
