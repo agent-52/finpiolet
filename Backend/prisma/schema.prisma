@@ -12,66 +12,69 @@ datasource db {
   provider = "postgresql"
 }
 
-enum AuthProvider{
+enum AuthProvider {
   LOCAL
   GOOGLE
 }
 
-model User{
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
-  password String?
-  provider AuthProvider @default(LOCAL)
+model User {
+  id         Int          @id @default(autoincrement())
+  name       String
+  email      String       @unique
+  password   String?
+  provider   AuthProvider @default(LOCAL)
   providerId String?
-  avatarUrl String?
-  createdAt DateTime @default(now())
-  udatedAt DateTime @updatedAt
+  avatarUrl  String?
+  createdAt  DateTime     @default(now())
+  udatedAt   DateTime     @updatedAt
 
-  categories Category[]
-  transactions Transaction[]
-  budgets Budget[]
-  goals Goal[]
-  refreshTokens RefreshToken[]
-  aiInsights AiInsight[]
+  categories      Category[]
+  transactions    Transaction[]
+  budgets         Budget[]
+  goals           Goal[]
+  refreshTokens   RefreshToken[]
+  aiInsights      AiInsight[]
+  aiConversations AiConversation[]
 }
 
-enum CategoryType{
+enum CategoryType {
   INCOME
   EXPENSE
 }
-model Category{
-  id Int @id @default(autoincrement())
-  name String
-  userId Int?
-  createdAt DateTime @default(now())
-  type CategoryType
-  user User? @relation(fields: [userId], references: [id])
+
+model Category {
+  id        Int          @id @default(autoincrement())
+  name      String
+  userId    Int?
+  createdAt DateTime     @default(now())
+  type      CategoryType
+  user      User?        @relation(fields: [userId], references: [id])
 
   transactions Transaction[]
-  budget Budget[]
+  budget       Budget[]
 }
 
-enum TransactionType{
+enum TransactionType {
   INCOME
   EXPENSE
 }
-model Transaction{
-  id Int @id @default(autoincrement())
-  userId Int 
-  categoryId Int
-  type TransactionType
-  amount Int
-  description String?
+
+model Transaction {
+  id              Int             @id @default(autoincrement())
+  userId          Int
+  categoryId      Int
+  type            TransactionType
+  amount          Int
+  description     String?
   transactionDate DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime?
 
-  user User @relation(fields: [userId],references: [id])
+  user     User     @relation(fields: [userId], references: [id])
   category Category @relation(fields: [categoryId], references: [id])
 }
 
-enum Month{
+enum Month {
   January
   Feburary
   March
@@ -85,58 +88,89 @@ enum Month{
   November
   December
 }
-model Budget{
-  id Int @id @default(autoincrement())
-  userId Int 
-  categoryId Int
-  amount Int
-  month Month
-  year Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+model Budget {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  categoryId Int
+  amount     Int
+  month      Month
+  year       Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id])
   category Category @relation(fields: [categoryId], references: [id])
 }
 
-model Goal{
-  id Int @id @default(autoincrement())
-  userId Int
-  title String
-  targetAmount Int
+model Goal {
+  id                 Int      @id @default(autoincrement())
+  userId             Int
+  title              String
+  targetAmount       Int
   currentSavedAmount Int
-  targetDate DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  targetDate         DateTime
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id])
 }
 
-model RefreshToken{
-  id Int @id @default(autoincrement())
-  userId Int
-  token String @unique
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
 }
 
-
-enum InsightType{
-  Monthly_Summary
-  Spending_Insight
-  Saving_Recommendation
+enum InsightType {
+  MONTHLY_SUMMARY
+  SPENDING_INSIGHT
+  SAVING_RECOMMENDATION
+  BUDGET_WARNING
+  GOAL_PROGRESS
+  GOAL_ACHIEVED
+  GOAL_AT_RISK
+  CASHFLOW_ALERT
+  SUBSCRIPTION_ALERT
+  SPENDING_SPIKE
+  CATEGORY_TREND
   //more suggest more
 }
 
-model AiInsight{
-  id Int @id @default(autoincrement())
-  userId Int
-  type InsightType
-  content String
-  metadata Json
-  generatedAt DateTime @default(now())
+enum InsightPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+model AiInsight {
+  id          Int             @id @default(autoincrement())
+  userId      Int
+  type        InsightType
+  priority    InsightPriority
+  content     String
+  metadata    Json?
+  isRead      Boolean         @default(false)
+  generatedAt DateTime        @default(now())
 
   user User @relation(fields: [userId], references: [id])
+}
+
+enum AiRole {
+  USER
+  ASSISTANT
+}
+
+model AiConversation {
+  id      Int    @id @default(autoincrement())
+  userId  Int
+  role    AiRole
+  message String @db.Text
+
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

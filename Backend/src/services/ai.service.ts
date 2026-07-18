@@ -1,3 +1,4 @@
+import aiRepository from "../repositories/ai.repository";
 import { ApiError } from "../utils/ApiError"
 import { groq } from "../utils/groq"
 import { buildFinancialContext } from "./contextBuilder.service"
@@ -16,8 +17,13 @@ async function aiService(userId:number, message:string) {
 
     //Call financial engines/repositories
     const userFinancialContext = await buildFinancialContext(userId)
+
+    //conversation history
+    const conversationHistory = await aiRepository.getRecentMessages(userId)
+    //reverse this history for proper context for ai to understand
+    conversationHistory.reverse()
     //Build prompt
-    const prompt = buildPrompt(userFinancialContext, message)
+    const prompt = buildPrompt(userFinancialContext, message, conversationHistory)
     //Call Groq
 
     try {
@@ -27,14 +33,24 @@ async function aiService(userId:number, message:string) {
 
             messages:[
                 {
-                    role:"assistant",
+                    role:"user",
                     content:prompt
                 }
             ],
             temperature: 0.5,
         })
 
-        return completion.choices[0]?.message.content
+        const aiReplyMessage = completion.choices[0]?.message.content
+
+        if(aiReplyMessage?.trim()){
+            await aiRepository.saveMessage(userId, "USER", message)
+            await aiRepository.saveMessage(userId, "ASSISTANT", aiReplyMessage)
+        }
+
+        return{
+            success:true,
+            reply:aiReplyMessage
+        }
     } catch (error) {
         throw new ApiError(503, "AI service is temporarily unavailable")
     }
