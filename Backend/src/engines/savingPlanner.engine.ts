@@ -23,7 +23,7 @@ export async function  savingPlannerEngine(userId:number, targetAdditionalSaving
     let totalPotentialSaving = 0;
     let originalTarget = targetAdditionalSaving
     let remainingTarget = targetAdditionalSaving
-    const recommendations = categoryExpenseList.map((c) => {
+    const allRecommendations = categoryExpenseList.map((c) => {
         if(c?.currentAverage && remainingTarget>0){
             let reduceableAmount = Math.round(Math.min(((30*c.currentAverage)/100), remainingTarget ))
         
@@ -38,6 +38,8 @@ export async function  savingPlannerEngine(userId:number, targetAdditionalSaving
         }
         
     }).filter(Boolean)
+
+    const recommendations = allRecommendations.filter((r) => r !== undefined)
 
     if(totalPotentialSaving< originalTarget){
         return{

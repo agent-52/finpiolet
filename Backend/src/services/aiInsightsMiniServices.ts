@@ -1,11 +1,12 @@
 //goal:- generate montly report of the user
 
+import { savingPlannerEngine } from "../engines/savingPlanner.engine";
 import { InsightType } from "../generated/prisma/enums";
 import aiInsightRepository from "../repositories/aiInsight.repository";
 import { ApiError } from "../utils/ApiError";
 import { groq } from "../utils/groq";
 import { buildFinancialContext } from "./contextBuilder.service";
-import { buildBudgetWarningPrompt, buildGoalProgressCoachPrompt, buildMonthlySummaryPrompt } from "./promptBuilder.service";
+import { buildBudgetWarningPrompt, buildGoalProgressCoachPrompt, buildMonthlySummaryPrompt, buildSavingPlannerExplainerPrompt } from "./promptBuilder.service";
 
 
 async function generateAiMonthlySummaryService(userId:number) {
@@ -14,7 +15,7 @@ async function generateAiMonthlySummaryService(userId:number) {
 
     const prompt = buildMonthlySummaryPrompt(financialContext)
 
-    const aiReply =  await generateInsight(prompt, userId)
+    const aiReply =  await generateInsight(prompt)
 
     const summary = await aiInsightRepository.createInsight(userId, aiReply.type, aiReply.priority, aiReply.content, aiReply.metadata)
 
@@ -26,7 +27,7 @@ async function generateAiMonthlySummaryService(userId:number) {
 
 }
 
-async function generateInsight(prompt:string, userId:number) {
+async function generateInsight(prompt:string) {
     try {
         const completion = await groq.chat.completions.create({
             model:"llama-3.3-70b-versatile",
@@ -64,7 +65,7 @@ async function generateAiBudgetWarningService(userId:number) {
 
     const prompt = buildBudgetWarningPrompt(financialContext)
 
-    const aiReply =  await generateInsight(prompt, userId)
+    const aiReply =  await generateInsight(prompt)
 
     if (!Array.isArray(aiReply.insights)) {
     throw new ApiError(
@@ -100,7 +101,7 @@ async function generateAiGoalProgressServie(userId:number) {
 
     const prompt = buildGoalProgressCoachPrompt(financialContext)
 
-    const aiReply =  await generateInsight(prompt, userId)
+    const aiReply =  await generateInsight(prompt)
 
     if (!Array.isArray(aiReply.insights)) {
     throw new ApiError(
@@ -127,4 +128,20 @@ async function generateAiGoalProgressServie(userId:number) {
     }
 
 }
-export {generateAiMonthlySummaryService, generateAiBudgetWarningService, generateAiGoalProgressServie}
+
+async function generateAiSavingPlannerExplanationService(userId:number, targetAdditionalSaving:number) {
+    
+    const savingPlan = await savingPlannerEngine(userId, targetAdditionalSaving)
+
+    const prompt = buildSavingPlannerExplainerPrompt(savingPlan)
+
+    const aiReply = await generateInsight(prompt)
+
+    const savingPlanInsight = await aiInsightRepository.createInsight(userId, aiReply.type, aiReply.priority, aiReply.content, aiReply.metadata)
+
+    return {
+        "success":true,
+        savingPlanInsight
+    }
+}
+export {generateAiMonthlySummaryService, generateAiBudgetWarningService, generateAiGoalProgressServie, generateAiSavingPlannerExplanationService}

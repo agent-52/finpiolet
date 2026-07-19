@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { aiService } from "../services/ai.service";
 import { ApiError } from "../utils/ApiError";
 import { aiInsightService } from "../services/aiInsights.service";
-import { generateAiBudgetWarningService, generateAiGoalProgressServie, generateAiMonthlySummaryService } from "../services/aiInsightsMiniServices";
+import { generateAiBudgetWarningService, generateAiGoalProgressServie, generateAiMonthlySummaryService, generateAiSavingPlannerExplanationService } from "../services/aiInsightsMiniServices";
 
 
 const aiController = async (req:Request, res:Response) => {
@@ -48,4 +48,15 @@ const aiGoalProgressController = async(req:Request, res:Response) => {
 
 }
 
-export {aiController, aiInsightController, aiMonthlySummaryController, aiBudgetWarningController, aiGoalProgressController}
+const aiSavingPlanExplainerController = async(req:Request, res:Response) => {
+    const userId = Number(req.user?.userId)
+    const targetAdditionalSaving = Number(req.body.targetAdditionalSaving)
+    
+    const result = await generateAiSavingPlannerExplanationService(userId, targetAdditionalSaving)
+
+    return res.status(200).json(result)
+
+}
+
+
+export {aiController, aiInsightController, aiMonthlySummaryController, aiBudgetWarningController, aiGoalProgressController, aiSavingPlanExplainerController}

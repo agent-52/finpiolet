@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authMiddleware } from "../middleware/auth.middleware";
 import { asyncHandler } from "../utils/asyncHandler";
-import { aiBudgetWarningController, aiController, aiGoalProgressController, aiInsightController, aiMonthlySummaryController } from "../controllers/ai.controllers";
+import { aiBudgetWarningController, aiController, aiGoalProgressController, aiInsightController, aiMonthlySummaryController, aiSavingPlanExplainerController } from "../controllers/ai.controllers";
 
 
 export const aiRouter = Router()
@@ -15,3 +15,5 @@ aiRouter.post("/monthly-summary", authMiddleware, asyncHandler(aiMonthlySummaryC
 aiRouter.post("/budget-warnings", authMiddleware, asyncHandler(aiBudgetWarningController))
 
 aiRouter.post("/goal-progress", authMiddleware, asyncHandler(aiGoalProgressController))
+
+aiRouter.post("/saving-planner-explanation", authMiddleware, asyncHandler(aiSavingPlanExplainerController))
