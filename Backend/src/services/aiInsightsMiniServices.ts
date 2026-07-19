@@ -5,10 +5,10 @@ import aiInsightRepository from "../repositories/aiInsight.repository";
 import { ApiError } from "../utils/ApiError";
 import { groq } from "../utils/groq";
 import { buildFinancialContext } from "./contextBuilder.service";
-import { buildBudgetWarningPrompt, buildMonthlySummaryPrompt } from "./promptBuilder.service";
+import { buildBudgetWarningPrompt, buildGoalProgressCoachPrompt, buildMonthlySummaryPrompt } from "./promptBuilder.service";
 
 
-async function generateMonthlySummaryService(userId:number) {
+async function generateAiMonthlySummaryService(userId:number) {
     
     const financialContext = await buildFinancialContext(userId)
 
@@ -59,7 +59,7 @@ async function generateInsight(prompt:string, userId:number) {
     }
 }
 
-async function generateBudgetWarningService(userId:number) {
+async function generateAiBudgetWarningService(userId:number) {
     const financialContext = await buildFinancialContext(userId)
 
     const prompt = buildBudgetWarningPrompt(financialContext)
@@ -93,4 +93,38 @@ async function generateBudgetWarningService(userId:number) {
 
 
 }
-export {generateMonthlySummaryService, generateBudgetWarningService}
+
+
+async function generateAiGoalProgressServie(userId:number) {
+    const financialContext = await buildFinancialContext(userId)
+
+    const prompt = buildGoalProgressCoachPrompt(financialContext)
+
+    const aiReply =  await generateInsight(prompt, userId)
+
+    if (!Array.isArray(aiReply.insights)) {
+    throw new ApiError(
+        500,
+        "Invalid AI response format."
+    );
+}
+
+    const goalProgressInsights = await Promise.all(
+    aiReply.insights.map((insight: any) =>
+        aiInsightRepository.createInsight(
+            userId,
+            insight.type,
+            insight.priority,
+            insight.content,
+            insight.metadata
+        )
+    )
+);
+
+    return {
+        "success":true,
+        goalProgressInsights
+    }
+
+}
+export {generateAiMonthlySummaryService, generateAiBudgetWarningService, generateAiGoalProgressServie}

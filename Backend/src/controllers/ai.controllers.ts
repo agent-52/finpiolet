@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { aiService } from "../services/ai.service";
 import { ApiError } from "../utils/ApiError";
 import { aiInsightService } from "../services/aiInsights.service";
-import { generateBudgetWarningService, generateMonthlySummaryService } from "../services/monthlySummary.service";
+import { generateAiBudgetWarningService, generateAiGoalProgressServie, generateAiMonthlySummaryService } from "../services/aiInsightsMiniServices";
 
 
 const aiController = async (req:Request, res:Response) => {
@@ -25,7 +25,7 @@ const aiInsightController = async(req:Request, res:Response) => {
 const aiMonthlySummaryController = async(req:Request, res:Response) => {
     const userId = Number(req.user?.userId)
 
-    const result = await generateMonthlySummaryService(userId)
+    const result = await generateAiMonthlySummaryService(userId)
 
     return res.status(200).json(result)
 }
@@ -33,10 +33,19 @@ const aiMonthlySummaryController = async(req:Request, res:Response) => {
 const aiBudgetWarningController = async(req:Request, res:Response) => {
     const userId = Number(req.user?.userId)
 
-    const result = await generateBudgetWarningService(userId)
+    const result = await generateAiBudgetWarningService(userId)
 
     return res.status(200).json(result)
 
 }
 
-export {aiController, aiInsightController, aiMonthlySummaryController, aiBudgetWarningController}
+const aiGoalProgressController = async(req:Request, res:Response) => {
+    const userId = Number(req.user?.userId)
+
+    const result = await generateAiGoalProgressServie(userId)
+
+    return res.status(200).json(result)
+
+}
+
+export {aiController, aiInsightController, aiMonthlySummaryController, aiBudgetWarningController, aiGoalProgressController}

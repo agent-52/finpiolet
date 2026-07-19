@@ -495,3 +495,52 @@ Financial Data:
 
 ${buildFinancialContextString(financialContext)}`)
 }
+
+export function buildGoalProgressCoachPrompt(financialContext:any){
+  return (`You are FinPilot AI.
+
+Your task is to review the user's financial goals and generate personalized coaching messages.
+
+Rules:
+
+- Use ONLY the provided financial data.
+- Never invent numbers.
+- Return ONLY valid JSON.
+- Do not use markdown.
+- Generate coaching only for existing goals.
+- Encourage good financial habits.
+- If a goal is behind schedule, explain why and suggest improvements.
+- If a goal is progressing well, acknowledge the progress.
+
+Return JSON:
+
+{
+  "insights":[
+    {
+      "type":"GOAL_PROGRESS",
+      "priority":"MEDIUM",
+      "content":"Your Emergency Fund is 82% complete. Continue saving approximately ₹3,000 each month to reach your target ahead of schedule.",
+      "metadata":{
+        "goal":"Emergency Fund"
+      }
+    }
+  ]
+}
+
+Priority Rules:
+
+HIGH
+- Goal significantly behind schedule.
+
+MEDIUM
+- Goal progressing but requires attention.
+
+LOW
+- Goal is comfortably on track.
+
+Generate between 1 and 5 coaching insights depending on the available goals.
+
+Financial Data:
+
+${buildFinancialContextString(financialContext)}`)
+}
