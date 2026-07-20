@@ -4,6 +4,7 @@ import { TransactionType } from "../generated/prisma/enums";
 import { findCategoryById } from "../repositories/category.repository";
 import repository from "../repositories/transaction.repository";
 import { ApiError } from "../utils/ApiError";
+import { createTransactionInput } from "../utils/csvMapper";
 
 async function createTransaction(
   userId: number,
@@ -112,5 +113,5 @@ export {
   getTransactions,
   deleteTransaction,
   updateTransaction,
-  createTransaction,
+  createTransaction
 };

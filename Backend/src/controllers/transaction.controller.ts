@@ -3,9 +3,15 @@ import {
   createTransaction,
   deleteTransaction,
   getTransactions,
+  importTransactions,
   updateTransaction,
 } from "../services/transaction.service";
 import { TransactionType } from "../generated/prisma/enums";
+import { ApiError } from "../utils/ApiError";
+
+import fs from "fs"
+
+import csv from "csv-parser";
 
 const createTransactionController = async (req: Request, res: Response) => {
   const userId = req.user?.userId;
@@ -124,9 +130,32 @@ export type TransactionQueryObject = {
   sortOrder?: "asc" | "desc";
 };
 
+const importTransactionsController = async (req:Request, res:Response) => {
+  const userId = req.user?.userId;
+  if (!userId) {
+    return res.status(404).json({
+      message: "userId not found",
+    });
+  }
+
+  if (!req.file) {
+            throw new ApiError(400, "Please upload a CSV file.");
+        }
+
+        const result = await importTransactions(
+            userId,
+            req.file.path
+        );
+
+        return res.status(200).json(result);
+
+
+}
+
 export {
   createTransactionController,
   updateTransactionController,
   deleteTransactionController,
   getTransactionsController,
+  importTransactionsController
 };
