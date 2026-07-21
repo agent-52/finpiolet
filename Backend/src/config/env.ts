@@ -8,5 +8,6 @@ export const env = {
   DATABASE_URL: process.env.DATABASE_URL,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-  GROQ_API_KEY:process.env.GROQ_API_KEY
+  GROQ_API_KEY:process.env.GROQ_API_KEY,
+  REDIS_URL:process.env.REDIS_URL
 };

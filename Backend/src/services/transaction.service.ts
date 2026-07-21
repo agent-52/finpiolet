@@ -4,7 +4,8 @@ import { TransactionType } from "../generated/prisma/enums";
 import { findCategoryById } from "../repositories/category.repository";
 import repository from "../repositories/transaction.repository";
 import { ApiError } from "../utils/ApiError";
-import { createTransactionInput } from "../utils/csvMapper";
+import { invalidateTransactionRelatedCache } from "../utils/cacheInvalidation";
+
 
 async function createTransaction(
   userId: number,
@@ -45,6 +46,9 @@ async function createTransaction(
     convertedTransactionDate,
     description,
   );
+
+  //invalidate users cache
+  await invalidateTransactionRelatedCache(userId, convertedTransactionDate.getFullYear(),convertedTransactionDate.getMonth()+1)
 
   return transaction;
 }
