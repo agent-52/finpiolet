@@ -1,8 +1,25 @@
+import redisClient from "../config/redis"
 import analyticsRepository from "../repositories/analytics.repository"
 import { findCategoryById } from "../repositories/category.repository"
 import dashboardRepository from "../repositories/dashboard.repository"
 
 export async function getAnalytics(userId:number) {
+    
+    const key = `analytics:user:${userId}`
+    try {
+        const value = await redisClient.get(key)
+
+        if(value){
+            try {
+                const result = JSON.parse(value)
+                return result
+            } catch (err) {
+                console.error("json parse of redis value failed for key: "+key)
+            }
+        }
+    } catch (error) {
+        console.error("redis GET failed with error "+error)
+    }
     
     const [categoryWiseSpend, currentMonthExpense, currentMonthIncome, monthlyExpenseTrend, monthlyIncomeExpenseTrend, topExpenseCategoryOfCurrentMonth, totalExpense ] = await Promise.all([
         analyticsRepository.getCategoryBreakdown(userId),
@@ -51,8 +68,7 @@ export async function getAnalytics(userId:number) {
         "savings": currentMonthIncome - currentMonthExpense,
         "topCategory": topCategoryName
     }
-
-    return {
+    const finalResult = {
         "success": true,
         "analytics": {
             monthlySpendingTrend:monthlyExpenseTrend,
@@ -62,4 +78,11 @@ export async function getAnalytics(userId:number) {
             currentMonthSummary
         }
     }
+
+    try {
+        await redisClient.set(key, JSON.stringify(finalResult), {EX: 300})
+    } catch (error) {
+        console.error("redis SET failed with error: ", error)
+    }
+    return finalResult
 }

@@ -49,4 +49,16 @@ async function aiInsightService(userId:number) {
     }
 }
 
-export{aiInsightService}
+
+async function getLatestInsightService(userId:number) {
+    const todaysInsight = await aiInsightRepository.getToadysInsight(userId)
+    if(!todaysInsight){
+        //what if cron job failed to run and there is no insight for today, logic
+    }
+    return {
+        success:true,
+        todaysInsight
+    }
+    
+}
+export{aiInsightService, getLatestInsightService}

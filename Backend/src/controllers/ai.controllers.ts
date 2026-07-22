@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { aiService } from "../services/ai.service";
 import { ApiError } from "../utils/ApiError";
-import { aiInsightService } from "../services/aiInsights.service";
+import { aiInsightService, getLatestInsightService } from "../services/aiInsights.service";
 import { generateAiBudgetWarningService, generateAiGoalProgressServie, generateAiMonthlySummaryService, generateAiSavingPlannerExplanationService } from "../services/aiInsightsMiniServices";
 
 
@@ -17,7 +17,7 @@ const aiController = async (req:Request, res:Response) => {
 const aiInsightController = async(req:Request, res:Response) => {
     const userId = Number(req.user?.userId)
 
-    const result = await aiInsightService(userId)
+    const result = await getLatestInsightService(userId)
 
     return res.status(200).json(result)
 }

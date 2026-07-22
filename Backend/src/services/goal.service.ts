@@ -1,3 +1,4 @@
+import redisClient from "../config/redis";
 import goalRepository from "../repositories/goal.repository";
 import { goalUpdateType } from "../types/goal";
 import { ApiError } from "../utils/ApiError";
@@ -98,8 +99,28 @@ async function deleteGoal(userId: number, goalId: number) {
 }
 
 async function getGoals(userId: number) {
+  const key = `goals:user:${userId}`
+    try {
+        const value = await redisClient.get(key)
+
+        if(value){
+            try {
+                const result = JSON.parse(value)
+                return result
+            } catch (err) {
+                console.error("json parse of redis value failed for key: "+key)
+            }
+        }
+    } catch (error) {
+        console.error("redis GET failed with error "+error)
+    }
   const goals = await goalRepository.getGoals(userId);
 
+  try {
+        await redisClient.set(key, JSON.stringify(goals), {EX: 300})
+    } catch (error) {
+        console.error("redis SET failed with error: ", error)
+    }
   return goals;
 }
 

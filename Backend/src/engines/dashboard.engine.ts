@@ -35,17 +35,17 @@ async function getDashboard(userId: number) {
     : 0;
 
   const [budgets, goals] = await Promise.all([
-    await budgetRepository.getBudgets(userId),
-    await goalRepository.getGoals(userId),
+     budgetRepository.getBudgets(userId),
+     goalRepository.getGoals(userId),
   ]);
 
   const [budgetOverview, goalOverview] = await Promise.all([
-    await Promise.all(
+    Promise.all(
       budgets
         .slice(0, 3)
         .map((budget) => calculateBudgetUsage(userId, budget.id)),
     ),
-    await Promise.all(
+     Promise.all(
       goals.slice(0, 3).map((goal) => calculateGoalPlan(userId, goal.id)),
     ),
   ]);

@@ -43,8 +43,20 @@ async function deleteOldInsights(userId:number){
   return deletedInsights
 }
 
+async function getToadysInsight(userId:number) {
+  const today = new Date()
+  const result = await prisma.aiInsight.findMany({
+    where:{
+      userId,
+      generatedAt:today
+    }
+  })
+  return result
+}
+
 export default {
     createInsight,
     getInsights,
-    deleteOldInsights
+    deleteOldInsights,
+    getToadysInsight
 }
