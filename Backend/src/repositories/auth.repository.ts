@@ -119,7 +119,17 @@ async function updateUserProvider(
 
   return updatedUser;
 }
+
+async function findAllUsers() {
+  const users = await prisma.user.findMany({
+    select:{
+      id:true
+    }
+  })
+  return users
+}
 export {
+  findAllUsers,
   findUserByEmail,
   findUserById,
   createUser,
@@ -129,3 +139,5 @@ export {
   deleteRefreshToken,
   updateUserProvider,
 };
+
+

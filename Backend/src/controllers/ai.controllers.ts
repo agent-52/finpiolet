@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { aiService } from "../services/ai.service";
 import { ApiError } from "../utils/ApiError";
-import { aiInsightService, getLatestInsightService } from "../services/aiInsights.service";
+import { generateInsight, getLatestInsightService } from "../services/aiInsights.service";
 import { generateAiBudgetWarningService, generateAiGoalProgressServie, generateAiMonthlySummaryService, generateAiSavingPlannerExplanationService } from "../services/aiInsightsMiniServices";
 
 

@@ -1,8 +1,8 @@
 import app from "./app";
-import { startCronJobs } from "./config/cron";
 import { env } from "./config/env";
 import { connectDb } from "./config/prisma";
 import { connectRedis } from "./config/redis";
+import { startCronJobs } from "./cron/cron";
 
 
 async function startServer() {

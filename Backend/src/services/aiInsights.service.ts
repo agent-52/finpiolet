@@ -1,64 +1,101 @@
-
 import { InsightPriority, InsightType } from "../generated/prisma/enums";
 import aiInsightRepository from "../repositories/aiInsight.repository";
+import { findAllUsers } from "../repositories/auth.repository";
 import { ApiError } from "../utils/ApiError";
 import { groq } from "../utils/groq";
 import { buildFinancialContext } from "./contextBuilder.service";
 import { buildInsightPrompt } from "./promptBuilder.service";
 
-async function aiInsightService(userId:number) {
-    
-    const financialContext = await buildFinancialContext(userId)
+async function generateInsight(userId: number) {
+    const todaysInsights = await aiInsightRepository.getToadysInsight(userId);
 
-    const prompt =  buildInsightPrompt(financialContext)
+    if(todaysInsights.length >0){
+        return `user ${userId} todays insights already exists skipping this user.`
+    }
+  const financialContext = await buildFinancialContext(userId);
 
-    try {
-        const completion = await groq.chat.completions.create({
-            model:"llama-3.3-70b-versatile",
-            // response_format:{type:"json_object"},
-            messages:[{
-                role:"user",
-                content:prompt
-            }],
-            temperature:0.5
-        })
+  const prompt = buildInsightPrompt(financialContext);
 
-        const rawMessage = completion.choices[0]?.message.content
-        if(rawMessage){
-            try {
-                const aiReply = JSON.parse(rawMessage)
-                let savedInsights = []
-                
-                for (const reply of aiReply) {
-                    const insight = await aiInsightRepository.createInsight(userId, reply.type, reply.priority, reply.content, reply.metadata )
-                    savedInsights.push(insight)
+  try {
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.3-70b-versatile",
+      // response_format:{type:"json_object"},
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+      temperature: 0.5,
+    });
 
-                }
-                return {
-                    "success":true,
-                    savedInsights
-                }
+    const rawMessage = completion.choices[0]?.message.content;
+    if (rawMessage) {
+      try {
+        const aiReply = JSON.parse(rawMessage);
+        let savedInsights = [];
 
-
-            } catch (error) {
-                throw new ApiError(500, "unable to parse aiInsight service response returned by the ai ")
-            }
+        for (const reply of aiReply) {
+          const insight = await aiInsightRepository.createInsight(
+            userId,
+            reply.type,
+            reply.priority,
+            reply.content,
+            reply.metadata,
+          );
+          savedInsights.push(insight);
         }
-    } catch (error) {
-        throw new ApiError(503, "Ai service unavailable at this moment try again later")
+        return {
+          success: true,
+          savedInsights,
+        };
+      } catch (error) {
+        throw new ApiError(
+          500,
+          "unable to parse aiInsight service response returned by the ai ",
+        );
+      }
     }
+  } catch (error) {
+    throw new ApiError(
+      503,
+      "Ai service unavailable at this moment try again later",
+    );
+  }
 }
 
-
-async function getLatestInsightService(userId:number) {
-    const todaysInsight = await aiInsightRepository.getToadysInsight(userId)
-    if(!todaysInsight){
-        //what if cron job failed to run and there is no insight for today, logic
-    }
-    return {
+async function getLatestInsightService(userId: number) {
+  const todaysInsights = await aiInsightRepository.getToadysInsight(userId);
+  if (todaysInsights.length == 0) {
+    //no insight for today wala case
+    const result = await generateInsight(userId)
+    return{
         success:true,
-        todaysInsight
+        result
     }
-    
+  }
+  return {
+    success: true,
+    todaysInsights,
+  };
 }
-export{aiInsightService, getLatestInsightService}
+
+async function generateInsightsForAllUsers() {
+  const users = await findAllUsers();
+  for (const user of users) {
+    try {
+      const result = await generateInsight(user.id);
+    } catch (err) {
+      console.error(
+        `insight generation for this userid ${user.id} failed , `,
+        err,
+      );
+    }
+  }
+  
+}
+export {
+  generateInsight,
+  getLatestInsightService,
+  generateInsightsForAllUsers,
+};
