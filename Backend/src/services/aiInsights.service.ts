@@ -1,3 +1,4 @@
+import pLimit from "p-limit";
 import { InsightPriority, InsightType } from "../generated/prisma/enums";
 import aiInsightRepository from "../repositories/aiInsight.repository";
 import { findAllUsers } from "../repositories/auth.repository";
@@ -82,6 +83,8 @@ async function getLatestInsightService(userId: number) {
 
 async function generateInsightsForAllUsers() {
   const users = await findAllUsers();
+
+  //naive way only use if only a few users because agar 1user ka response 5 sec leta hai aur 10000 users hai to one by one execute hone mai pura laghbhag 8 ghante lagenge
   for (const user of users) {
     try {
       const result = await generateInsight(user.id);
@@ -92,6 +95,18 @@ async function generateInsightsForAllUsers() {
       );
     }
   }
+  //promise.all() wali approach is also wrong because if 10000 concurrent request to groq hue to problems jaise ki rate limiting , high memory usage etc aa jaegi 
+
+    //await Promise.all(users.map((user) => generateInsight(user.id)))
+
+  //correct way (Concurrency Limiting) :- instead of 1000 at once or 1 at once we do 10 at a time then next 10 and so on
+    //using p-limit library
+
+    // const limit = pLimit(10)
+    // await Promise.all(
+    //   users.map(user => limit(() => generateInsight(user.id)))
+    // )
+
   
 }
 export {

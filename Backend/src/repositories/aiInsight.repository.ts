@@ -44,11 +44,17 @@ async function deleteOldInsights(userId:number){
 }
 
 async function getToadysInsight(userId:number) {
-  const today = new Date()
+  const startOfDay = new Date()
+  startOfDay.setHours(0,0,0,0)
+  const endOfDay = new Date()
+  endOfDay.setHours(23, 59, 59, 999)
   const result = await prisma.aiInsight.findMany({
     where:{
       userId,
-      generatedAt:today
+      generatedAt:{
+        lte:endOfDay,
+        gte:startOfDay
+      }
     }
   })
   return result

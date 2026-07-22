@@ -15,3 +15,6 @@ export function aiInsightsCronJob() {
     })
     
 }
+//q} testing ke liye raat ke 1 baje tak ka wait nahi karna hai to kaise karoge?
+
+//ans} "* * * * * " user kar lo every minute run hoga to test kar lo ya fir genrateInsightsForAllUSers wale function ko indivialally check kar lo
