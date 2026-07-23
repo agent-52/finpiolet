@@ -3,6 +3,7 @@ import AnalyticsPage from "./pages/Analytics";
 import SignIn from "./pages/auth/SignIn";
 import SignUp from "./pages/auth/Signup";
 import BudgetsPage from "./pages/BudgetPage";
+import GoalsPage from "./pages/GoalPage";
 import TransactionsPage from "./pages/TransactionPage";
 
 const routes = [
@@ -30,6 +31,10 @@ const routes = [
     {
         path:"/analytics",
         element:<AnalyticsPage />
+    },
+    {
+        path:"/goals",
+        element:<GoalsPage/>
     }
     // {
     //     path:"profile/:name",
