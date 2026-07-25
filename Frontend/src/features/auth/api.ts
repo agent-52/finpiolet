@@ -1,14 +1,25 @@
 import api from "../../api/axiosApi";
-import type { LoginFormData } from "./schemas/login.schema";
+import type { SignupFomData, SigninFormData } from "./schemas/login.schema";
 
-export async function login(data: LoginFormData) {
+export async function signin(data: SigninFormData) {
     const response = await api.post("/auth/signin", data);
 
     return response.data;
 }
+export async function signup(data:SignupFomData) {
+    const response = await api.post("/auth/signup", data);
 
+    return response.data
+}
+
+export async function refreshToken() {
+    const response = await api.post("/auth/refresh")
+    return response.data
+}
 export async function logout() {
-    await api.post("/auth/logout");
+    const response = await api.post("/auth/logout");
+
+    return response.data
 }
 
 export async function getCurrentUser() {
