@@ -1,9 +1,46 @@
 /* Reset & Base */
+
+@import "tailwindcss";
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+--
+:root{
+  --green: "#16a34a",
+  --greenDark: "#15803d",
+  --greenDeeper: "#14532d",
+  --greenTint: "#f0fdf4",
+  --greenBorder: "#dcfce7",
+  --greenGlow: "#86efac",
+  --greenDot1: "#4ade80",
+  --greenDot2: "#34d399",
+
+  --text: "#0d1117",
+  --text2: "#334155",
+  --textBody: "#475569",
+  --textMuted: "#64748b",
+  --textCaption: "#94a3b8",
+
+  --divider: "#cbd5e1",
+  --border: "#e2e8f0",
+
+  --bgSubtle: "#f1f5f9",
+  --bgPage: "#f8f9fb",
+  --bgHover: "#f8fafc",
+
+  --white: "#ffffff",
+
+  --hero: "#0d1117",
+  --heroMid: "#1a2332",
+  --heroEnd: "#0f2318",
+
+  --blueTint: "#eff6ff",
+  --blueBorder: "#dbeafe",
+  --blueText: "#1e3a6e",
 }
 
 body {
@@ -206,4 +243,22 @@ body {
 
 .avatar-circle:first-child {
   margin-left: 0;
+}
+
+.img-box{
+  height: 100%;
+}
+.header{
+  height: 64px;
+  position:fixed;
+  width: 100vw;
+}
+.img-box img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.border{
+  border: 1px solid red;
 }

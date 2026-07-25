@@ -1,10 +1,13 @@
 import App from "./App";
-import AnalyticsPage from "./pages/Analytics";
-import SignIn from "./pages/auth/SignIn";
-import SignUp from "./pages/auth/Signup";
-import BudgetsPage from "./pages/BudgetPage";
-import GoalsPage from "./pages/GoalPage";
-import TransactionsPage from "./pages/TransactionPage";
+import { SignInPage } from "./features/auth/pages/SignInPage";
+import { SignUpPage } from "./features/auth/pages/SignUpPage";
+// import AnalyticsPage from "./pages/Analytics";
+
+
+// import SignUp from "./pages/auth/Signup";
+// import BudgetsPage from "./pages/BudgetPage";
+// import GoalsPage from "./pages/GoalPage";
+// import TransactionsPage from "./pages/TransactionPage";
 
 const routes = [
     {
@@ -14,28 +17,28 @@ const routes = [
     },
     {
         path:"/signin",
-        element:<SignIn/>
+        element:<SignInPage/>
     },
     {
         path:"/signup",
-        element:<SignUp/>
+        element:<SignUpPage/>
     },
-    {
-        path:"/budgets",
-        element:<BudgetsPage/>
-    },
-    {
-        path:"/transactions",
-        element:<TransactionsPage />
-    },
-    {
-        path:"/analytics",
-        element:<AnalyticsPage />
-    },
-    {
-        path:"/goals",
-        element:<GoalsPage/>
-    }
+    // {
+    //     path:"/budgets",
+    //     element:<BudgetsPage/>
+    // },
+    // {
+    //     path:"/transactions",
+    //     element:<TransactionsPage />
+    // },
+    // {
+    //     path:"/analytics",
+    //     element:<AnalyticsPage />
+    // },
+    // {
+    //     path:"/goals",
+    //     element:<GoalsPage/>
+    // }
     // {
     //     path:"profile/:name",
     //     element:<Profile/>
