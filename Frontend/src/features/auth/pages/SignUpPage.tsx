@@ -1,4 +1,5 @@
 import { Header } from "../../../components/Header";
+import { Breaker } from "../components/Breaker";
 import { Button } from "../components/Button";
 import { InputWithLabel } from "../components/InputWithLabel";
 
@@ -18,13 +19,9 @@ export function SignUpPage(){
                         <h1>Create your account</h1>
                         <p>Already have an account? <span>Sign in</span></p>
                     </div>
-                    <Button name="Continue with Google" img=""/>
+                    <Button name="Continue with Google" backImg=""/>
                 </div>
-                <div className="flex">
-                    <div className="line"></div>
-                    <div>or with email</div>
-                    <div className="line"></div>
-                </div>
+                <Breaker name="" />
                 <div className="flex-col">
                     <InputWithLabel name="name" placeholder="Sophie Laurent" labelName="Full name" type="text"/>
                     <InputWithLabel name="email" placeholder="sophie@example.com" labelName="Email address" type="email"/>
@@ -33,7 +30,7 @@ export function SignUpPage(){
                         <input type="checkbox" name="" id="" />
 
                     </div>
-                    <Button name="Create account" img=""/>
+                    <Button name="Create account" backImg=""/>
                 </div>
             </div>
         </div>

@@ -1,9 +1,10 @@
 
-export function Button({img, name}:{img?:string, name:string}){
+export function Button({backImg, frontImg, name}:{backImg?:string, name:string, frontImg?:string}){
     return(
         <div className="flex btn-1 gap-1">
-            {img?<div></div>:null}
+            {backImg?<div></div>:null}
             <div>{name}</div>
+            {frontImg?<div></div>:null}
         </div>
     )
 }
