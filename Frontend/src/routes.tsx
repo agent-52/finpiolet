@@ -23,6 +23,10 @@ const routes = [
         path:"/signup",
         element:<SignUpPage/>
     },
+    {
+        path:"/dashboard",
+        element:<SignUpPage />
+    }
     // {
     //     path:"/budgets",
     //     element:<BudgetsPage/>

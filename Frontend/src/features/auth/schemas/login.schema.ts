@@ -13,6 +13,10 @@ export const signinSchema = z.object({
 });
 
 export const signupSchema = z.object({
+    name: z
+        .string()
+        .trim()
+        .min(1, "name field is required"),
     email: z
         .string()
         .trim()

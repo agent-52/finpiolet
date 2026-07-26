@@ -1,10 +1,35 @@
+import { useState } from "react"
 import { Header } from "../../../components/Header"
 import { Breaker } from "../components/Breaker"
 import { Button } from "../components/Button"
 import { InputWithLabel } from "../components/InputWithLabel"
+import { useSignIn } from "../hooks/useSignIn"
+
 
 
 export function SignInPage(){
+  
+  const [inputData, setInputData] = useState({
+    email:"",
+    password:""
+  })
+  
+
+  const signInMutation = useSignIn()
+
+  const handleInputChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = event.target
+    setInputData((prevData) => ({
+      ...prevData,
+      [name]:value
+    }))
+    
+  }
+  const handleSubmit = (e:React.MouseEvent<HTMLButtonElement>) =>{
+    e.preventDefault()
+
+    signInMutation.mutate(inputData)
+  }
 
   return (
     <div>
@@ -21,10 +46,10 @@ export function SignInPage(){
           <Button backImg="" name="Continue with Google" />
           <Breaker name="Sign in with email" />
 
-          <InputWithLabel labelName="EMAIL ADDRESS" placeholder="you@example.com" name="email" type="email" />
-          <InputWithLabel labelName="PASSWORD" placeholder=".........." name="password" type="password" />
+          <InputWithLabel labelName="EMAIL ADDRESS" placeholder="you@example.com" name="email" type="email" onChangeFn={handleInputChange}/>
+          <InputWithLabel labelName="PASSWORD" placeholder=".........." name="password" type="password" onChangeFn={handleInputChange}/>
           
-          <Button name="Sign in to FinPiolet ->" frontImg="" />
+          <Button name={signInMutation.isPending?"Signing In...":"Sign in to FinPiolet ->" } frontImg="" onClickFn={handleSubmit} disable={signInMutation.isPending}/>
 
           <div>Don't have an account? <span>Create one</span></div>
 
