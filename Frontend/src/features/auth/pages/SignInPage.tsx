@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Header } from "../../../components/Header"
+import { Header } from "../../../components/common/Header"
 import { Breaker } from "../components/Breaker"
 import { Button } from "../components/Button"
 import { InputWithLabel } from "../components/InputWithLabel"

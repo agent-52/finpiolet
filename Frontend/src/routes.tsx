@@ -1,6 +1,7 @@
 import App from "./App";
 import { SignInPage } from "./features/auth/pages/SignInPage";
 import { SignUpPage } from "./features/auth/pages/SignUpPage";
+import { TransactionPage } from "./features/transactions/hooks/TransactionPage";
 // import AnalyticsPage from "./pages/Analytics";
 
 
@@ -26,15 +27,15 @@ const routes = [
     {
         path:"/dashboard",
         element:<SignUpPage />
-    }
+    },
     // {
     //     path:"/budgets",
     //     element:<BudgetsPage/>
     // },
-    // {
-    //     path:"/transactions",
-    //     element:<TransactionsPage />
-    // },
+    {
+        path:"/transactions",
+        element:<TransactionPage />
+    },
     // {
     //     path:"/analytics",
     //     element:<AnalyticsPage />
