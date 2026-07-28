@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getAccessToken } from "../lib/token";
 
 
 
@@ -7,6 +8,13 @@ const api = axios.create({
     withCredentials: true,
 });
 
+axios.interceptors.request.use((config) => {
+    const token = getAccessToken();
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+    }
 
+    return config
+})
 
 export default api;

@@ -1,11 +1,13 @@
 import { useEffect } from "react"
 import { useCurrentUser } from "./features/auth/hooks/useCurrentUser"
+import { useAuthStore } from "./features/auth/store/authStore"
 
 
-const login = useAuthStore((state) => state.login)
-const logout = useAuthStore((state) => state.logout)
+
 
 function App() {
+  const login = useAuthStore((state) => state.login)
+  const logout = useAuthStore((state) => state.logout)
   
   const {data, isLoading, isError, isSuccess} = useCurrentUser()
   console.log(data)

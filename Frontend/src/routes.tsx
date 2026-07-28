@@ -1,4 +1,6 @@
 import App from "./App";
+import { ProtectedRoute } from "./config/ProtectedRoute";
+import { PublicRoute } from "./config/PublicRoute";
 import { SignInPage } from "./features/auth/pages/SignInPage";
 import { SignUpPage } from "./features/auth/pages/SignUpPage";
 import { TransactionPage } from "./features/transactions/hooks/TransactionPage";
@@ -11,43 +13,56 @@ import { TransactionPage } from "./features/transactions/hooks/TransactionPage";
 // import TransactionsPage from "./pages/TransactionPage";
 
 const routes = [
+    
     {
-        path:"/",
-        element:<App/>,
-        // errorElement
+        element:<PublicRoute />,
+        children:[
+            {
+                path:"/signin",
+                element:<SignInPage/>
+            },
+            {
+                path:"/signup",
+                element:<SignUpPage/>
+            },
+        ]
     },
     {
-        path:"/signin",
-        element:<SignInPage/>
+        element:<ProtectedRoute />,
+        children:[
+            {
+                path:"/",
+                element:<App/>,
+                // errorElement
+            },
+            {
+                path:"/dashboard",
+                element:<SignUpPage />
+            },
+            {
+                path:"/transactions",
+                element:<TransactionPage />
+            },
+            // {
+            //     path:"/analytics",
+            //     element:<AnalyticsPage />
+            // },
+            // {
+            //     path:"/goals",
+            //     element:<GoalsPage/>
+            // },
+            // {
+            //     path:"profile/:name",
+            //     element:<Profile/>
+            // },
+            // {
+            //     path:"/budgets",
+            //     element:<BudgetsPage/>
+            // }
+        ]
     },
-    {
-        path:"/signup",
-        element:<SignUpPage/>
-    },
-    {
-        path:"/dashboard",
-        element:<SignUpPage />
-    },
-    // {
-    //     path:"/budgets",
-    //     element:<BudgetsPage/>
-    // },
-    {
-        path:"/transactions",
-        element:<TransactionPage />
-    },
-    // {
-    //     path:"/analytics",
-    //     element:<AnalyticsPage />
-    // },
-    // {
-    //     path:"/goals",
-    //     element:<GoalsPage/>
-    // }
-    // {
-    //     path:"profile/:name",
-    //     element:<Profile/>
-    // }
+    
+    
 ]
 
 export default routes

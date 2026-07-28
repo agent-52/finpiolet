@@ -30,7 +30,7 @@ interface User{
 }
 interface CurrentUserResponse{
     success:boolean;
-    user:User
+    user:UserDetails
 }
 
 interface LogoutResponse{
