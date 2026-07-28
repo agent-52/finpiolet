@@ -9,7 +9,7 @@ function getAccessToken(){
 }
 
 function clearAccessToken(){
-
+    localStorage.removeItem("accessToken")
 }
 
 export {
