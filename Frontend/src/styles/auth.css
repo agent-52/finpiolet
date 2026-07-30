@@ -1,0 +1,35 @@
+
+.cW1{
+    color: white;
+}
+.bgW{
+    background-color: white;
+}
+.cGrey1{
+    color: #9ba9bc;
+}
+.bgGrey1{
+    background-color: #e2e8f0;
+}
+.bgW1{
+    background-color: #f8f9fb;
+}
+.bgLg1{
+    background-color: #f0fdf4;
+}
+.cLg2{
+    color: #39803d;
+}
+.borderT2{
+    border: 1px solid #dcfce7;
+}
+.bgG1{
+    background-color: #16a34a;
+}
+
+
+.line{
+    width: 100%;
+    height: 1px;
+
+}
