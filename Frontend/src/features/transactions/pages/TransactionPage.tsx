@@ -88,7 +88,7 @@ export const TransactionPage = () => {
   );
 };
 
-const DropBox = ({
+export const DropBox = ({
   name,
   optionArray,
 }: {

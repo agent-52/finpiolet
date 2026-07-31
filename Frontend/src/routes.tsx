@@ -3,7 +3,8 @@ import { ProtectedRoute } from "./config/ProtectedRoute";
 import { PublicRoute } from "./config/PublicRoute";
 import { SignInPage } from "./features/auth/pages/SignInPage";
 import { SignUpPage } from "./features/auth/pages/SignUpPage";
-import { TransactionPage } from "./features/transactions/hooks/TransactionPage";
+import { DashboardPage } from "./features/dashboard/pages/DashboardPage";
+import { TransactionPage } from "./features/transactions/pages/TransactionPage";
 // import AnalyticsPage from "./pages/Analytics";
 
 
@@ -37,7 +38,7 @@ const routes = [
             },
             {
                 path:"/dashboard",
-                element:<SignUpPage />
+                element:<DashboardPage />
             },
             {
                 path:"/transactions",
