@@ -6,10 +6,13 @@ import { Sidebar } from "../../../components/common/Sidebar";
 import { Header2 } from "../../../components/common/Header2";
 import { DropBox } from "../../transactions/pages/TransactionPage";
 import { Button } from "../../auth/components/Button";
-import { Divide, DownloadIcon, IndianRupee, PiggyBank, ShoppingBag, Wallet } from "lucide-react";
+import { Divide, DownloadIcon, Goal, IndianRupee, PiggyBank, ShoppingBag, Wallet } from "lucide-react";
 import { useAuthStore } from "../../auth/store/authStore";
 import { Card1 } from "../components/Card1";
 import { AnalyticsCardWrapper } from "../components/AnalyticsCardLayout";
+import { RecentTransactionCard } from "../components/RecentTransactionCard";
+import { BudgetOverviewCard } from "../components/BudgetOverviewCard";
+import { GoalOverviewCard } from "../components/GoalOverviewCard";
 
 export const DashboardPage = () => {
   const { data, isLoading, isError, error } = useDashboard();
@@ -116,8 +119,46 @@ export const DashboardPage = () => {
         
           <div className="flex-wrap">
             {/* Recent transactions */}
+            <div className="recent-transactions">
+              <div className="flex justify-between">
+                <div>
+                  <h2>Recent Transactions</h2>
+                  <p>Last few days</p>
+                </div>
+                <div>view all</div>
+              </div>
+              {data?.recentTransactions.map((transaction) => {
+                return (<RecentTransactionCard title={transaction.title} description={transaction.description} label={transaction.categoryId} amount={transaction.amount} date={transaction.createdAt}/>)
+              })}
+              
+            </div>
             {/* Budgets overview */}
+
+            <div className="budgets-overview-section">
+              <div className="flex justify-between">
+                <div>
+                  <h2>Budget Overview</h2>
+                  <p></p>
+                </div>
+                <div>Manage</div>
+              </div>
+              {data?.budgetOverview.map((budget) => {
+                return(<BudgetOverviewCard title={budget.name} budget={budget.budget} spent={budget.spent} remaining={budget.remaining} percentage={budget.usagePercentage} />)
+              })}
+            </div>
             {/* Goals overview */}
+            <div className="goals-overview-section">
+              <div className="flex justify-between">
+                <div>
+                  <h2>Goals Progress</h2>
+                  <p>{data?.totalGoals} active goals</p>
+                </div>
+                <div>Add goal</div>
+              </div>
+              {data?.goalOverview.map((goal) => {
+                return (<GoalOverviewCard backImg={<Goal size={14}/>} title={goal.goal.title} remaniningMonths={goal.remainingMonths} currentAmount={goal.goal.currentSavedAmount} targetAmount={goal.goal.targetAmount} percentage={goal.currentProgress} remainingAmount={goal.remainingAmount} requiredSavingPerMonth={goal.requiredMonthlySavings} />)
+              })}
+            </div>
           </div>
 
         </div>
