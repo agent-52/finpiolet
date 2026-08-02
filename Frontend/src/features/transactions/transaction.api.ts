@@ -17,8 +17,8 @@ async function updateTransaction(data:TransactionUpdateData):Promise<Transaction
     return response.data
 }
 
-async function deleteTransaction():Promise<TransactionDeleteResponse> {
-    const response = await api.delete("/transaction/:id")
+async function deleteTransaction(transactionId:number):Promise<TransactionDeleteResponse> {
+    const response = await api.delete(`/transaction/${transactionId}`)
     return response.data
 }
 

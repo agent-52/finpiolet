@@ -1,17 +1,18 @@
 import type { TransactionType } from "../dashboard/dashboard.types";
 
-
 export type Transaction = {
- type: TransactionType;
- amount: number;
- description: string | null;
- transactionDate: Date;
- createdAt: Date;
- updatedAt: Date | null;
- id: number;
- userId: number;
- categoryId: number;
-}
+  title: string;
+  paymentMethodId: number;
+  type: TransactionType;
+  amount: number;
+  description: string | null;
+  transactionDate: Date;
+  createdAt: Date;
+  updatedAt: Date | null;
+  id: number;
+  userId: number;
+  categoryId: number;
+};
 
 export type TransactionQueryObject = {
   page?: string;
@@ -28,35 +29,42 @@ export type TransactionQueryObject = {
 };
 
 export type TransactionUpdateData = {
-    categoryId?:number,
-    type?:TransactionType,
-    amount?: number;
-    description?: string | null;
-    transactionDate?: Date;
+  categoryId?: number;
+  type?: TransactionType;
+  amount?: number;
+  description?: string | null;
+  transactionDate?: Date;
+};
+export type TransactionData = {
+    title:string;
+  categoryId: number;
+  type: TransactionType;
+  amount: number;
+  description?: string;
+  transactionDate: Date;
+  paymentMethodId:number
+};
 
+export interface TransactionCreateResponse {
+  success: boolean;
+  transaction: Transaction;
 }
-export type TransactionData = { categoryId:number, type:TransactionType, amount:number, description:string, transactionDate:Date }
 
-export interface TransactionCreateResponse{
-    success:boolean;
-    transaction:Transaction
+export interface TransactionUpdateResponse {
+  success: boolean;
+  transaction: Transaction;
 }
 
-export interface TransactionUpdateResponse{
-    success:boolean;
-    transaction:Transaction
-}
-
-export interface TransactionDeleteResponse{
-    success:boolean;
-    message:string;
-    deletedTransaction:Transaction
+export interface TransactionDeleteResponse {
+  success: boolean;
+  message: string;
+  deletedTransaction: Transaction;
 }
 
 export interface TransactionGetResponse {
-    success: boolean,
-    page: string | undefined,
-    limit: string | undefined,
-    total: number,
-    transactions:Transaction[],
+  success: boolean;
+  page: string | undefined;
+  limit: string | undefined;
+  total: number;
+  transactions: Transaction[];
 }
