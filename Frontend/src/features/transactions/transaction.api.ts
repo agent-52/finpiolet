@@ -1,22 +1,24 @@
 import api from "../../api/axiosApi";
+import type { TransactionCreateResponse, TransactionData, TransactionDeleteResponse, TransactionGetResponse, TransactionQueryObject, TransactionUpdateData, TransactionUpdateResponse } from "./transaction.types";
 
-async function getTransactions() {
-    const response = await api.get("/transaction")
+async function getTransactions(queryObject:TransactionQueryObject):Promise<TransactionGetResponse> {
+    const queryString = new URLSearchParams(queryObject).toString()
+    const response = await api.get(`/transaction${queryString}`)
     return response.data
 }
 
-async function createTransaction(data:TransactionData) {
+async function createTransaction(data:TransactionData):Promise<TransactionCreateResponse> {
     const response = await api.post("/transaction", data)
     return response.data
 }
 
-async function updateTransaction(data:TransactionUpdateData) {
-    const response = await api.patch("/transaction", data)
+async function updateTransaction(data:TransactionUpdateData):Promise<TransactionUpdateResponse> {
+    const response = await api.patch("/transaction/:id", data)
     return response.data
 }
 
-async function deleteTransaction(data:{id:number}) {
-    const response = await api.delete("/transaction", data)
+async function deleteTransaction():Promise<TransactionDeleteResponse> {
+    const response = await api.delete("/transaction/:id")
     return response.data
 }
 
