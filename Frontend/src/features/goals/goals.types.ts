@@ -37,6 +37,7 @@ export interface GoalPlanResponse{
 export type Goal = {
  title: string;
  targetAmount: number;
+ status:GoalStatus
  currentSavedAmount: number;
  targetDate: Date;
  createdAt: Date;

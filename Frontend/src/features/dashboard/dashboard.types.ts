@@ -64,7 +64,7 @@ export enum GoalStatus {
   COMPLETED = "COMPLETED",
   IN_PROGRESS = "IN_PROGRESS",
   ON_TRACK = "ON_TRACK",
-  AT_RISK = "AT_RISK",
+  BEHIND = "BEHIND",
 }
 
 export type goalOverview = {

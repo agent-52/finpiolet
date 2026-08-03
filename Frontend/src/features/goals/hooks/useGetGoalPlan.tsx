@@ -5,5 +5,6 @@ export const useGetGoalPlan = (goalId: number) => {
   return useQuery({
     queryKey: ["goalPlan", goalId],
     queryFn: () => getGoalPlan(goalId),
+    enabled: !!goalId,
   });
 };
