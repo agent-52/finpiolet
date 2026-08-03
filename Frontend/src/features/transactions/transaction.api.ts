@@ -12,13 +12,13 @@ async function createTransaction(data:TransactionData):Promise<TransactionCreate
     return response.data
 }
 
-async function updateTransaction(data:TransactionUpdateData):Promise<TransactionUpdateResponse> {
-    const response = await api.patch("/transaction/:id", data)
+async function updateTransaction(data:{id:number, transactionData:TransactionUpdateData}):Promise<TransactionUpdateResponse> {
+    const response = await api.patch(`/transaction/${data.id}`, data.transactionData)
     return response.data
 }
 
-async function deleteTransaction(transactionId:number):Promise<TransactionDeleteResponse> {
-    const response = await api.delete(`/transaction/${transactionId}`)
+async function deleteTransaction(id:number):Promise<TransactionDeleteResponse> {
+    const response = await api.delete(`/transaction/${id}`)
     return response.data
 }
 
