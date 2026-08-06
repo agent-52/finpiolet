@@ -5,6 +5,7 @@ title: string;
     targetAmount: number;
     currentSavedAmount: number;
     targetDate: string;
+    notes?:string;
 }
 
 export interface GoalResponse{
@@ -17,10 +18,8 @@ export interface GoalGetResponse{
     goals:Goal[]
 }
 
-export interface GoalPlanResponse{
-    success:boolean;
-    goalPlan:{
-        goal:string;
+export interface GoalPlan{
+    goal:string;
         targetAmount:number;
         savedAmount:number;
         remainingAmount:number;
@@ -29,7 +28,11 @@ export interface GoalPlanResponse{
         requiredMonthlySaving:number;
         status:GoalStatus
 
-    }
+}
+
+export interface GoalPlanResponse{
+    success:boolean;
+    goalPlan:GoalPlan;
 }
 
 

@@ -21,7 +21,10 @@ export async function getGoals() :Promise<GoalGetResponse>{
     return response.data
 }
 
-export async function getGoalPlan(id:number) :Promise<GoalPlanResponse>{
-    const response = await api.get(`/goals/:${id}`)
-    return response.data
+export async function getGoalPlan(id:number|null) :Promise<GoalPlanResponse|null>{
+    if(id){
+        const response = await api.get(`/goals/:${id}`)
+        return response.data
+    }
+    return null
 }

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getGoalPlan } from "../goals.api";
 
-export const useGetGoalPlan = (goalId: number) => {
+export const useGetGoalPlan = (goalId: number | null) => {
   return useQuery({
     queryKey: ["goalPlan", goalId],
     queryFn: () => getGoalPlan(goalId),
