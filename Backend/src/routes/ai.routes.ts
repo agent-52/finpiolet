@@ -8,12 +8,12 @@ export const aiRouter = Router()
 
 aiRouter.post("/chat", authMiddleware, asyncHandler(aiController))
 
-aiRouter.post("/insights", authMiddleware, asyncHandler(aiInsightController))
+aiRouter.get("/insights", authMiddleware, asyncHandler(aiInsightController))
 
-aiRouter.post("/monthly-summary", authMiddleware, asyncHandler(aiMonthlySummaryController))
+aiRouter.get("/monthly-summary", authMiddleware, asyncHandler(aiMonthlySummaryController))
 
-aiRouter.post("/budget-warnings", authMiddleware, asyncHandler(aiBudgetWarningController))
+aiRouter.get("/budget-warnings", authMiddleware, asyncHandler(aiBudgetWarningController))
 
-aiRouter.post("/goal-progress", authMiddleware, asyncHandler(aiGoalProgressController))
+aiRouter.get("/goal-progress", authMiddleware, asyncHandler(aiGoalProgressController))
 
 aiRouter.post("/saving-planner-explanation", authMiddleware, asyncHandler(aiSavingPlanExplainerController))

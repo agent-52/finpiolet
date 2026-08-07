@@ -1,0 +1,58 @@
+return category name with transactions
+add paymentMethod column in transactions and enum it to bankTransfer, cash, creditcard , upi, netbanking, crypto etc
+
+return some analytics data also in the dashboard, return this month, last 6 months, last year , all time data for the filter to work in the dashboard
+
+retun status in every goal response not only on the goalplan response.
+in goalStaus enum replace atrisk with behind
+
+add this in the analytics response from the backend and the analytics page will call the ai insights services in the frontend so add that to the analytics page in the frontend alos 
+ savingsTrajectory: [
+          { month: 'Jan', projected: 1400, actual: 1300 },
+          { month: 'Feb', projected: 1600, actual: 1500 },
+          { month: 'Mar', projected: 1800, actual: 1100 },
+          { month: 'Apr', projected: 2000, actual: 1700 },
+          { month: 'May', projected: 2200, actual: 1900 },
+          { month: 'Jun', projected: 2500, actual: 2100 }
+        ],
+        budgetPerformance: [
+          { category: 'Food', budget: 700, spent: 750 },
+          { category: 'Transport', budget: 400, spent: 380 },
+          { category: 'Shopping', budget: 600, spent: 840 },
+          { category: 'Bills', budget: 500, spent: 500 },
+          { category: 'Health', budget: 300, spent: 180 }
+        ],
+        goalProgress: [
+          { name: 'Emergency Fund', current: 9200, target: 15000, dueDate: 'Dec 2024', color: '#10b981' },
+          { name: 'Vacation Fund', current: 3750, target: 5000, dueDate: 'Aug 2024', color: '#3b82f6' },
+          { name: 'New Laptop', current: 1640, target: 2000, dueDate: 'Sep 2024', color: '#8b5cf6' },
+          { name: 'Investment Portfolio', current: 18200, target: 50000, dueDate: 'Dec 2026', color: '#f59e0b' }
+        ],
+        insights: [
+          { type: 'success', title: 'Best savings month on record', description: 'June had your highest savings rate at 26.4% of income — $600 above your 6-month average.' },
+          { type: 'danger', title: 'Shopping budget exceeded', description: 'Shopping hit $840 this month — 40% over your $600 limit. Consider adjusting your budget.' },
+          { type: 'warning', title: 'Highest income month', description: 'May 2024 was your peak-earning month at $8,100 — 15% above your 6-month average.' },
+          { type: 'info', title: 'Financial consistency score', description: 'Spending patterns are 84% consistent month-over-month — well above the 70% benchmark.' }
+        ],
+        financialHealth: {
+          score: 88,
+          label: 'Excellent',
+          description: "Your financial health is excellent. You're consistently hitting savings targets and staying within budget across 5 of 6 categories.",
+          metrics: {
+            income: { current: 8000, previous: 8100, trend: -1.9 },
+            expenses: { current: 2800, previous: 3100, trend: -11.9 },
+            netSavings: { current: 2100, previous: 1900, trend: 9.4 }
+          }
+        },
+        spendingHeatmap: Array.from({ length: 35 }, (_, i) => ({
+          day: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][i % 7],
+          week: `W${Math.floor(i / 7) + 1}`,
+          intensity: Math.floor(Math.random() * 5) as 0|1|2|3|4 // 0 to 4
+        })),
+        categoryLeaderboard: [
+          { category: 'Food & Dining', transactions: 42, amount: 840, momChange: -5.2, trend: 'down', share: 100, color: '#10b981' },
+          { category: 'Shopping', transactions: 28, amount: 660, momChange: 18.4, trend: 'up', share: 79, color: '#8b5cf6' },
+          { category: 'Bills & Utilities', transactions: 8, amount: 540, momChange: 0.8, trend: 'up', share: 64, color: '#f59e0b' },
+          { category: 'Transportation', transactions: 35, amount: 450, momChange: -12.1, trend: 'down', share: 54, color: '#3b82f6' },
+          { category: 'Healthcare', transactions: 6, amount: 240, momChange: -3.3, trend: 'down', share: 29, color: '#ef4444' }
+        ]

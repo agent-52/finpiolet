@@ -3,15 +3,11 @@ import {
   createTransaction,
   deleteTransaction,
   getTransactions,
-  importTransactions,
   updateTransaction,
 } from "../services/transaction.service";
 import { TransactionType } from "../generated/prisma/enums";
 import { ApiError } from "../utils/ApiError";
-
-import fs from "fs"
-
-import csv from "csv-parser";
+import { importTransactions } from "../services/transactionImport.service";
 
 const createTransactionController = async (req: Request, res: Response) => {
   const userId = req.user?.userId;

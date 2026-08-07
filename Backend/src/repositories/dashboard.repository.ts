@@ -38,7 +38,7 @@ async function getRecentTransactions(userId:number){
         orderBy:{
             transactionDate:"desc"
         },
-        take:5
+        take:8
     })
     return recentTransactions
 }
