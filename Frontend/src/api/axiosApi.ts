@@ -5,12 +5,13 @@ import { logout, refreshToken } from "../features/auth/api";
 
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: "http://localhost:3000/api",
     withCredentials: true,
 });
 
-axios.interceptors.request.use((config) => {
+api.interceptors.request.use((config) => {
     const token = getAccessToken();
+    console.log("axios interceptor ran and set this token:", token)
     if (token) {
         config.headers.Authorization = `Bearer ${token}`
     }
@@ -18,7 +19,7 @@ axios.interceptors.request.use((config) => {
     return config
 })
 
-axios.interceptors.response.use(
+api.interceptors.response.use(
     (response) => response,
 
     async (error) => {

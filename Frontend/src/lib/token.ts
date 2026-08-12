@@ -5,6 +5,7 @@ function setAccessToken( token:string){
 
 function getAccessToken(){
     const token = localStorage.getItem('accessToken')
+    console.log("token:- ", token)
     return token;
 }
 
