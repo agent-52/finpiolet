@@ -24,6 +24,7 @@ const authMiddleware = async (
     });
   }
   const extractedToken = accessToken.split(" ")[1];
+  console.log(extractedToken)
   if (!extractedToken) {
     return res.status(401).json({
       success: false,

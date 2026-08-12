@@ -14,6 +14,7 @@ export const prisma = new PrismaClient({
 export async function connectDb() {
   try {
     await prisma.$connect()
+    console.log("✅ Successfully connected with prisma ")
   } catch (error) {
     throw new ApiError(500, "prisma connection cannot be established wrong credentials")
   }

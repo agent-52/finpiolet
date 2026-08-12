@@ -8,7 +8,7 @@ import {
 import { authMiddleware } from "../middleware/auth.middleware";
 import { asyncHandler } from "../utils/asyncHandler";
 
-const categoryRouter = Router();
+ export const categoryRouter = Router();
 
 categoryRouter.get("/", authMiddleware, asyncHandler(getCategoriesController) );
 

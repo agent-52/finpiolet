@@ -10,7 +10,7 @@ import {
 import { asyncHandler } from "../utils/asyncHandler";
 import upload from "../middleware/upload.middleware";
 
-const transactionRouter = Router();
+export const transactionRouter = Router();
 
 transactionRouter.post("/", authMiddleware, asyncHandler(createTransactionController));
 
