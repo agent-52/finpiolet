@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import "./goal.css";
+import "../../../styles/goal.css";
 import { GoalCard } from "../components/GoalCard";
 import { GoalDetailSection } from "../components/GoalDetailSection";
 import { GoalForm } from "../components/GoalForm";

@@ -1,5 +1,5 @@
 import React from "react";
-import "./goal.css";
+import "../../../styles/goal.css";
 
 export const GoalPageSkeleton: React.FC = () => {
   return (

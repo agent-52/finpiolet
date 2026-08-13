@@ -17,7 +17,6 @@ export function useSignIn (){
         onSuccess: (data) =>{
             setAccessToken(data.accessToken)
             login(data.user)
-            console.log("loginSUccessfull")
             navigate("/dashboard")
 
         },

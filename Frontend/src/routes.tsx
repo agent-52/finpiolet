@@ -3,7 +3,8 @@ import { ProtectedRoute } from "./config/ProtectedRoute";
 import { PublicRoute } from "./config/PublicRoute";
 import { SignInPage } from "./features/auth/pages/SignInPage";
 import { SignUpPage } from "./features/auth/pages/SignUpPage";
-import { DashboardPage } from "./features/dashboard/pages/DashboardPage";
+import DashboardPage from "./features/dashboard/pages/DashboardPage";
+import { GoalPage } from "./features/goals/pages/GoalPage";
 import { TransactionPage } from "./features/transactions/pages/TransactionPage";
 // import AnalyticsPage from "./pages/Analytics";
 
@@ -46,10 +47,10 @@ const routes = [
       //     path:"/analytics",
       //     element:<AnalyticsPage />
       // },
-      // {
-      //     path:"/goals",
-      //     element:<GoalsPage/>
-      // },
+      {
+        path: "/goals",
+        element: <GoalPage />,
+      },
       // {
       //     path:"profile/:name",
       //     element:<Profile/>
