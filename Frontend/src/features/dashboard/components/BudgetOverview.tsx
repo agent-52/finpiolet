@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 const BUDGETS = [
   { category: "Housing", spent: 2400, budget: 2500, color: "#4f46e5" },
   { category: "Food & Dining", spent: 1640, budget: 1800, color: "#10b981" },
@@ -8,14 +10,22 @@ const BUDGETS = [
 ];
 
 export default function BudgetOverview() {
+  const navigate = useNavigate();
   return (
     <div className="fp-widget-card">
       <div className="fp-widget-header">
         <div>
           <h3 className="fp-widget-title">Budget Overview</h3>
-          <p className="fp-widget-subtitle">December 2024</p>
+          {/* <p className="fp-widget-subtitle">December 2024</p> */}
         </div>
-        <button className="fp-widget-action-link">Manage</button>
+        <button
+          className="fp-widget-action-link"
+          onClick={() => {
+            navigate("/budgets");
+          }}
+        >
+          Manage
+        </button>
       </div>
 
       <div className="fp-divider-list">

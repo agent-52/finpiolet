@@ -8,6 +8,7 @@ import type { GoalData } from "../goals.types";
 import { GoalStatus } from "../../dashboard/dashboard.types";
 import { useGoals } from "../hooks/useGoals";
 import { useGetGoalPlan } from "../hooks/useGetGoalPlan";
+import { Sidebar } from "../../../components/common/Sidebar";
 
 // Replace this wrapper with your custom Modal Component
 const ModalWrapper: React.FC<{
@@ -73,6 +74,9 @@ export const GoalPage: React.FC = () => {
   const [selectedGoalId, setSelectedGoalId] = useState<number | null>(null);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [editingGoalId, setEditingGoalId] = useState<number | null>(null);
+
+  //sidebar state
+  const [activePage, setActivePage] = useState("goals");
 
   // Hook for selected goal details
   const { data: goalDetails, isLoading: isDetailsLoading } =
@@ -143,6 +147,7 @@ export const GoalPage: React.FC = () => {
 
   return (
     <div className="goals-page-container">
+      <Sidebar activePage={activePage} onNavigate={setActivePage} />
       {/* Top Header */}
       <header className="goals-header-bar">
         <div className="goals-title-section">

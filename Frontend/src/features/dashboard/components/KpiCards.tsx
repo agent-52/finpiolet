@@ -6,6 +6,7 @@ import {
   TrendingUp,
   Wallet,
 } from "lucide-react";
+import type { CategoryType, OverviewData } from "../dashboard.types";
 
 interface KPICardProps {
   title: string;
@@ -51,12 +52,16 @@ function KPICard({
   );
 }
 
-export default function KPICards() {
+export default function KPICards({
+  overviewData,
+}: {
+  overviewData: OverviewData;
+}) {
   return (
     <div className="fp-kpi-grid fp-section-mb">
       <KPICard
         title="Total Income"
-        value="$12,840"
+        value={`₹${overviewData.totalIncome}`}
         sub="This month"
         trend={8.2}
         iconWrapClass="fp-kpi-icon-wrap--indigo"
@@ -64,7 +69,7 @@ export default function KPICards() {
       />
       <KPICard
         title="Total Expenses"
-        value="$7,320"
+        value={`₹${overviewData.totalExpenses}`}
         sub="This month"
         trend={-3.5}
         iconWrapClass="fp-kpi-icon-wrap--amber"
@@ -72,7 +77,7 @@ export default function KPICards() {
       />
       <KPICard
         title="Total Savings"
-        value="$5,520"
+        value={`₹${overviewData.totalSavings}`}
         sub="Net this month"
         trend={14.8}
         iconWrapClass="fp-kpi-icon-wrap--emerald"
@@ -80,8 +85,8 @@ export default function KPICards() {
       />
       <KPICard
         title="Top Category"
-        value="Housing"
-        sub="$2,400 spent"
+        value={`${overviewData.topSpendingCategory.categoryName}`}
+        sub={`₹${overviewData.topSpendingCategory.amount}`}
         trend={2.1}
         iconWrapClass="fp-kpi-icon-wrap--purple"
         Icon={Wallet}

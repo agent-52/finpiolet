@@ -1,127 +1,104 @@
+import {
+  ArrowLeftRight,
+  BarChart2,
+  ChevronRight,
+  CreditCard,
+  HelpCircle,
+  LayoutDashboard,
+  PiggyBank,
+  Settings,
+  Target,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export const Sidebar = () => {
+interface SidebarProps {
+  activePage: string;
+  onNavigate: (page: string) => void;
+}
+
+const NAV_ITEMS = [
+  { icon: LayoutDashboard, label: "Dashboard", id: "dashboard" },
+  { icon: ArrowLeftRight, label: "Transactions", id: "transactions" },
+  { icon: PiggyBank, label: "Budgets", id: "budgets" },
+  { icon: Target, label: "Goals", id: "goals" },
+  { icon: CreditCard, label: "Categories", id: "category" },
+  { icon: BarChart2, label: "Analytics", id: "analytics" },
+];
+
+const BOTTOM_NAV_ITEMS = [
+  { icon: Settings, label: "Settings", id: "settings" },
+  { icon: HelpCircle, label: "Help", id: "help" },
+];
+
+export function Sidebar({ activePage, onNavigate }: SidebarProps) {
   const navigate = useNavigate();
   return (
-    <nav>
-      <SidebarCard
-        name="Dashboard"
-        img=""
-        onClickFn={(e) => {
-          navigate("/dashboard");
-        }}
-      />
-      <SidebarCard
-        name="Transactions"
-        img=""
-        onClickFn={(e) => {
-          navigate("/transactions");
-        }}
-      />
-      <SidebarCard
-        name="Budgets"
-        img=""
-        onClickFn={(e) => {
-          navigate("/budgets");
-        }}
-      />
-      <SidebarCard
-        name="Goals"
-        img=""
-        onClickFn={(e) => {
-          navigate("/goals");
-        }}
-      />
-      <SidebarCard
-        name="Analytics"
-        img=""
-        onClickFn={(e) => {
-          navigate("/analytics");
-        }}
-      />
-      <SidebarCard
-        name="Saving Planner"
-        img=""
-        onClickFn={(e) => {
-          navigate("/saving-planner");
-        }}
-      />
-      <SidebarCard
-        name="Categories"
-        img=""
-        onClickFn={(e) => {
-          navigate("/categories");
-        }}
-      />
-    </nav>
-  );
-};
-
-const SidebarCard = ({
-  name,
-  img,
-  onClickFn,
-}: {
-  name: string;
-  img: string;
-  onClickFn?: (e: React.MouseEvent<HTMLDivElement>) => void;
-}) => {
-  return (
-    <div onClick={onClickFn}>
-      <div>
-        <img src={img} alt="" />
+    <aside className="fp-sidebar">
+      <div className="fp-sidebar-logo">
+        <div className="fp-sidebar-logo-inner">
+          <div className="fp-sidebar-logo-mark">FP</div>
+          <span className="fp-sidebar-logo-name">FinPilot</span>
+        </div>
       </div>
-      <div>{name}</div>
-    </div>
+
+      <nav className="fp-sidebar-nav">
+        <div className="fp-sidebar-nav-group">
+          {NAV_ITEMS.map(({ icon: Icon, label, id }) => {
+            const isActive = activePage === id;
+            return (
+              <button
+                key={id}
+                onClick={() => {
+                  onNavigate(id);
+                  navigate(`/${id}`);
+                }}
+                className={`fp-sidebar-nav-item${isActive ? " fp-sidebar-nav-item--active" : ""}`}
+              >
+                <span className="fp-sidebar-nav-icon">
+                  <Icon size={16} />
+                </span>
+                <span className="fp-sidebar-nav-label">{label}</span>
+                {isActive && (
+                  <span className="fp-sidebar-nav-chevron">
+                    <ChevronRight size={12} />
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="fp-sidebar-section">
+          <span className="fp-sidebar-section-title">Workspace</span>
+          <div className="fp-sidebar-nav-group">
+            <button className="fp-sidebar-nav-item">
+              <span className="fp-sidebar-ws-dot fp-sidebar-ws-dot--green">
+                P
+              </span>
+              <span className="fp-sidebar-nav-label">Personal</span>
+            </button>
+            <button className="fp-sidebar-nav-item">
+              <span className="fp-sidebar-ws-dot fp-sidebar-ws-dot--purple">
+                J
+              </span>
+              <span className="fp-sidebar-nav-label">Joint</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <div className="fp-sidebar-bottom">
+        <div className="fp-sidebar-bottom-group">
+          {BOTTOM_NAV_ITEMS.map(({ icon: Icon, label, id }) => (
+            <button key={id} className="fp-sidebar-nav-item">
+              <span className="fp-sidebar-nav-icon">
+                <Icon size={16} />
+              </span>
+              <span className="fp-sidebar-nav-label">{label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </aside>
   );
-};
-
-// const Sidebar = ({
-//   isCollapsed,
-//   setIsCollapsed,
-// }: {
-//   isCollapsed: boolean;
-//   setIsCollapsed: (v: boolean) => void;
-// }) => {
-//   const navItems = [
-//     { icon: <LayoutDashboard size={20} />, label: "Dashboard" },
-//     { icon: <ArrowRightLeft size={20} />, label: "Transactions" },
-//     { icon: <PieChart size={20} />, label: "Budgets" },
-//     { icon: <Target size={20} />, label: "Goals", active: true },
-//     { icon: <BarChart2 size={20} />, label: "Analytics" },
-//     { icon: <Bot size={20} />, label: "AI Assistant" },
-//     { icon: <Calendar size={20} />, label: "Saving Planner" },
-//     { icon: <Tags size={20} />, label: "Categories" },
-//     { icon: <User size={20} />, label: "Profile" },
-//   ];
-
-//   return (
-//     <div className={`sidebar ${isCollapsed ? "collapsed" : ""}`}>
-//       <div className="sidebar-header">
-//         <ShieldAlert className="logo-icon" size={28} />
-//         {!isCollapsed && <span>FinPilot</span>}
-//       </div>
-//       <div className="sidebar-nav">
-//         {navItems.map((item, idx) => (
-//           <div
-//             key={idx}
-//             className={`nav-item ${item.active ? "active" : ""}`}
-//             title={isCollapsed ? item.label : ""}
-//           >
-//             {item.icon}
-//             {!isCollapsed && <span>{item.label}</span>}
-//           </div>
-//         ))}
-//       </div>
-//       <div className="sidebar-footer">
-//         <button
-//           className="collapse-btn"
-//           onClick={() => setIsCollapsed(!isCollapsed)}
-//         >
-//           {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-//           {!isCollapsed && <span>Collapse</span>}
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
+}

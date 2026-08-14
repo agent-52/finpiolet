@@ -18,9 +18,43 @@ export interface DashboardResponse {
       amount: number | null | undefined;
     };
   };
-  recentTransactions: Transaction[];
+  recentTransactions: RecentTransaction[];
   budgetOverview: BudgetOverview[];
   goalOverview: goalOverview[];
+}
+
+
+export interface RecentTransaction{
+  id: number;
+ userId: number;
+ categoryId: number;
+ type: TransactionType;
+ amount: number;
+ title: string;
+ description: string | null;
+ paymentMethod: PaymentMethod;
+ transactionDate: Date;
+ createdAt: Date;
+ updatedAt: Date | null;
+    category: {
+        name: string;
+    };
+}
+export interface OverviewData{
+  totalIncome:number;
+  totalExpenses:number;
+  totalSavings:number;
+  savingsRate:string|number;
+  topSpendingCategory:{
+    categoryName: {
+        type: CategoryType;
+        userId: number | null;
+        id: number;
+        name: string;
+        createdAt: Date;
+    } | null | undefined;
+    amount: number | null | undefined;
+  };
 }
 
 export const CategoryType = {
@@ -39,18 +73,29 @@ export type TransactionType =
   (typeof TransactionType)[keyof typeof TransactionType];
 
 export type BudgetStatus = "SAFE" | "WARNING" | "EXCEEDED";
+export enum PaymentMethod {
+  BANKTRANSFER,
+  CASH,
+  CREDITCARD,
+  UPI,
+  NETBANKING,
+  CRYPTO
+}
 
 export type Transaction = {
-  type: TransactionType;
-  userId: number;
-  amount: number;
   id: number;
-  categoryId: number;
-  createdAt: Date;
-  description: string | null;
-  transactionDate: Date;
-  updatedAt: Date | null;
+ userId: number;
+ categoryId: number;
+ type: TransactionType;
+ amount: number;
+ title: string;
+ description: string | null;
+ paymentMethod: PaymentMethod;
+ transactionDate: Date;
+ createdAt: Date;
+ updatedAt: Date | null;
 };
+
 
 export type BudgetOverview = {
   budget: number;

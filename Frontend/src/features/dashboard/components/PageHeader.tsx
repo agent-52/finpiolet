@@ -4,11 +4,9 @@ import { DropBox } from "../../transactions/pages/TransactionPage";
 export default function PageHeader({
   name,
   period,
-  handlePeriod,
 }: {
   name?: string;
   period: string;
-  handlePeriod: (e: React.MouseEvent<HTMLSelectElement>) => void;
 }) {
   const [greetingTime, setGreetingTime] = useState("");
   useEffect(() => {

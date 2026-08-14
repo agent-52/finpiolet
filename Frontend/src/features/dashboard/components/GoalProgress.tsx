@@ -1,72 +1,46 @@
-import { Car, GraduationCap, Home, Plane, Target } from "lucide-react";
+import { Car, Goal, GraduationCap, Home, Plane, Target } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import type { goalOverview } from "../dashboard.types";
 
-const GOALS = [
-  {
-    id: "1",
-    name: "Emergency Fund",
-    Icon: Target,
-    current: 18500,
-    target: 25000,
-    deadline: "Jun 2025",
-    color: "#4f46e5",
-  },
-  {
-    id: "2",
-    name: "House Down Payment",
-    Icon: Home,
-    current: 42000,
-    target: 80000,
-    deadline: "Dec 2026",
-    color: "#10b981",
-  },
-  {
-    id: "3",
-    name: "Europe Vacation",
-    Icon: Plane,
-    current: 3200,
-    target: 5000,
-    deadline: "Aug 2025",
-    color: "#8b5cf6",
-  },
-  {
-    id: "4",
-    name: "MBA Program",
-    Icon: GraduationCap,
-    current: 12000,
-    target: 30000,
-    deadline: "Sep 2027",
-    color: "#f59e0b",
-  },
-  {
-    id: "5",
-    name: "New Car",
-    Icon: Car,
-    current: 8800,
-    target: 12000,
-    deadline: "Mar 2025",
-    color: "#3b82f6",
-  },
-];
+function getGoalColor(percentage: number): string {
+  if (percentage < 50) {
+    return "#f59e0b";
+  } else if (percentage < 75) {
+    return "#4f46e5";
+  } else {
+    return "#10b981";
+  }
+}
 
-export default function GoalsProgress() {
+export default function GoalsProgress({
+  goalsData,
+}: {
+  goalsData: goalOverview[];
+}) {
+  const navigate = useNavigate();
   return (
     <div className="fp-widget-card">
       <div className="fp-widget-header">
         <div>
           <h3 className="fp-widget-title">Goals Progress</h3>
-          <p className="fp-widget-subtitle">{GOALS.length} active goals</p>
+          <p className="fp-widget-subtitle">{goalsData.length} active goals</p>
         </div>
-        <button className="fp-widget-action-link">Add goal</button>
+        <button
+          className="fp-widget-action-link"
+          onClick={() => {
+            navigate("/goals");
+          }}
+        >
+          Manage
+        </button>
       </div>
 
       <div className="fp-divider-list">
-        {GOALS.map((goal) => {
-          const pct = Math.min((goal.current / goal.target) * 100, 100);
-          const remaining = goal.target - goal.current;
-          const iconBg = `${goal.color}18`;
+        {goalsData.map((goal) => {
+          const iconBg = `${getGoalColor(goal.currentProgress)}18`;
 
           return (
-            <div key={goal.id} className="fp-goal-item">
+            <div key={goal.goal.id} className="fp-goal-item">
               <div className="fp-goal-item-header">
                 <div className="fp-goal-left">
                   <div
@@ -74,23 +48,25 @@ export default function GoalsProgress() {
                     style={
                       {
                         "--goal-icon-bg": iconBg,
-                        "--goal-icon-color": goal.color,
+                        "--goal-icon-color": getGoalColor(goal.currentProgress),
                       } as React.CSSProperties
                     }
                   >
-                    <goal.Icon size={14} />
+                    <Goal size={14} />
                   </div>
                   <div>
-                    <p className="fp-goal-name">{goal.name}</p>
-                    <p className="fp-goal-deadline">By {goal.deadline}</p>
+                    <p className="fp-goal-name">{goal.goal.title}</p>
+                    <p className="fp-goal-deadline">
+                      By {goal.goal.targetDate.getDate()}
+                    </p>
                   </div>
                 </div>
                 <div className="fp-goal-amounts">
                   <p className="fp-goal-current">
-                    ${goal.current.toLocaleString()}
+                    ${goal.goal.currentSavedAmount.toLocaleString()}
                   </p>
                   <p className="fp-goal-target">
-                    of ${goal.target.toLocaleString()}
+                    of ${goal.goal.targetAmount.toLocaleString()}
                   </p>
                 </div>
               </div>
@@ -100,22 +76,26 @@ export default function GoalsProgress() {
                   className="fp-progress-fill"
                   style={
                     {
-                      "--progress-width": `${pct}%`,
-                      "--progress-color": goal.color,
+                      "--progress-width": `${goal.currentProgress}%`,
+                      "--progress-color": getGoalColor(goal.currentProgress),
                     } as React.CSSProperties
                   }
                 />
               </div>
 
               <div className="fp-goal-footer">
-                <span className="fp-goal-pct">{pct.toFixed(0)}% reached</span>
+                <span className="fp-goal-pct">
+                  {goal.currentProgress.toFixed(0)}% reached
+                </span>
                 <span
                   className="fp-goal-remaining"
                   style={
-                    { "--goal-icon-color": goal.color } as React.CSSProperties
+                    {
+                      "--goal-icon-color": getGoalColor(goal.currentProgress),
+                    } as React.CSSProperties
                   }
                 >
-                  ${remaining.toLocaleString()} remaining
+                  ${goal.remainingAmount.toLocaleString()} remaining
                 </span>
               </div>
             </div>

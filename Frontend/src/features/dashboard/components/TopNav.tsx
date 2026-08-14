@@ -1,7 +1,8 @@
 import { Bell, ChevronDown, Search } from "lucide-react";
 import { useState } from "react";
+import type { UserDetails } from "../../auth/auth.types";
 
-export default function TopNav() {
+export default function TopNav({ user }: { user: UserDetails | null }) {
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
@@ -31,9 +32,11 @@ export default function TopNav() {
             className="fp-topnav-profile-btn"
             onClick={() => setShowUserMenu(!showUserMenu)}
           >
-            <div className="fp-topnav-avatar">AJ</div>
+            <div className="fp-topnav-avatar">
+              {user?.name.slice(0, 2).toUpperCase()}
+            </div>
             <div className="fp-topnav-user-info">
-              <p className="fp-topnav-user-name">Alex Johnson</p>
+              <p className="fp-topnav-user-name">{user?.name}</p>
               <p className="fp-topnav-user-plan">Personal Plan</p>
             </div>
             <span className="fp-topnav-chevron">
@@ -49,8 +52,8 @@ export default function TopNav() {
               />
               <div className="fp-topnav-dropdown">
                 <div className="fp-dropdown-header">
-                  <p className="fp-dropdown-header-name">Alex Johnson</p>
-                  <p className="fp-dropdown-header-email">alex@finpilot.com</p>
+                  <p className="fp-dropdown-header-name">{user?.name}</p>
+                  <p className="fp-dropdown-header-email">{user?.email}</p>
                 </div>
                 {[
                   "Profile",
