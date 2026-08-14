@@ -22,10 +22,10 @@ async function calculateGoalPlan(userId: number, goalId: number) {
     //goal not met logic
   }
   const requiredMonthlySavings = (remainingMonths)? (remainingAmount / remainingMonths): remainingAmount;
-  const currentProgress = +(
+  const currentProgress = Math.min(+(
     (goal.currentSavedAmount / goal.targetAmount) *
     100
-  ).toFixed(2);
+  ).toFixed(2), 100);
 
   let goalStatus: GoalStatus;
 

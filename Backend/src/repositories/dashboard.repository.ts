@@ -38,6 +38,24 @@ async function getRecentTransactions(userId:number){
         orderBy:{
             transactionDate:"desc"
         },
+        select:{
+            id:true,
+            userId:true,
+            categoryId:true,
+            type:true,
+            amount:true,
+            description:true,
+            title:true,
+            paymentMethod:true,
+            transactionDate:true,
+            createdAt:true,
+            updatedAt:true,
+            category:{
+                select:{
+                    name:true
+                }
+            }
+        },
         take:8
     })
     return recentTransactions

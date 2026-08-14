@@ -59,13 +59,24 @@ enum TransactionType {
   EXPENSE
 }
 
+enum PaymentMethod {
+  BANKTRANSFER
+  CASH
+  CREDITCARD
+  UPI
+  NETBANKING
+  CRYPTO
+}
+
 model Transaction {
   id              Int             @id @default(autoincrement())
   userId          Int
   categoryId      Int
   type            TransactionType
   amount          Int
+  title           String
   description     String?
+  paymentMethod   PaymentMethod   @default(UPI)
   transactionDate DateTime
   createdAt       DateTime        @default(now())
   updatedAt       DateTime?
