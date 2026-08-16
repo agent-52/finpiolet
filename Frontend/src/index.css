@@ -9,7 +9,7 @@
 }
 
 --
-:root{
+/* :root{
   --green: "#16a34a",
   --greenDark: "#15803d",
   --greenDeeper: "#14532d",
@@ -41,7 +41,7 @@
   --blueTint: "#eff6ff",
   --blueBorder: "#dbeafe",
   --blueText: "#1e3a6e",
-}
+} */
 
 body {
   background: radial-gradient(circle at center, #ffffff 0%, #edf2f7 60%, #e2e8f0 100%);
