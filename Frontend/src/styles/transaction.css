@@ -9,6 +9,48 @@
   padding: 0;
 }
 
+/* ── Layout: sidebar in normal flow ─────────────────── */
+.app-layout {
+  display: flex;
+  align-items: stretch;
+  /* full height */
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: sticky !important;
+  /* override any fixed */
+  top: 0;
+  height: 100vh;
+  flex-shrink: 0;
+  width: 232px;
+  /* adjust to your sidebar width */
+  z-index: 50;
+  /* keep below modals */
+  transition: width 0.22s;
+  /* optional */
+}
+
+/* Collapsed state (if your Sidebar toggles a class like `collapsed`) */
+.sidebar.collapsed {
+  width: 68px;
+  /* adjust collapsed width */
+}
+
+.main-col {
+  flex: 1;
+  min-width: 0;
+  /* allow content to shrink */
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  width: 100%;
+  overflow-x: auto;
+  /* optional: prevent table overflow */
+}
+
 html,
 body {
   font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;

@@ -94,6 +94,10 @@ export type Transaction = {
  transactionDate: Date;
  createdAt: Date;
  updatedAt: Date | null;
+ category: {
+        name: string;
+        id:number;
+    };
 };
 
 

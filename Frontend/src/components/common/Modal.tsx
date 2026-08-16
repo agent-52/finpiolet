@@ -5,10 +5,16 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
-  description?:string
+  description?: string;
   children?: React.ReactNode;
 }
-export const Modal = ({ isOpen, onClose, title, description, children }: ModalProps) => {
+export const Modal = ({
+  isOpen,
+  onClose,
+  title,
+  description,
+  children,
+}: ModalProps) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key == "Escape") {
@@ -31,7 +37,7 @@ export const Modal = ({ isOpen, onClose, title, description, children }: ModalPr
   return (
     //the outer div purpose is to provide transparent /blur to the background
     <div
-      className="flex justify-center fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+      className="flex justify-center fixed inset-0 z-50 flex items-center justify-center  modal-backdrop"
       onClick={onClose}
     >
       {/* modal container */}

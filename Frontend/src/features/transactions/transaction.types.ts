@@ -1,18 +1,22 @@
-import type { TransactionType } from "../dashboard/dashboard.types";
+import type { PaymentMethod, Transaction, TransactionType } from "../dashboard/dashboard.types";
 
-export type Transaction = {
-  title: string;
-  paymentMethodId: number;
-  type: TransactionType;
-  amount: number;
-  description: string | null;
-  transactionDate: Date;
-  createdAt: Date;
-  updatedAt: Date | null;
+
+export interface Category {
   id: number;
-  userId: number;
-  categoryId: number;
-};
+  name: string;
+}
+export interface TransactionDisplay {
+  id: number;
+  title: string;
+  cat: string;
+  catC: string;
+  type: TransactionType;
+  date: string;           // e.g. "Jul 22, 2025"
+  dateMs: number;         // timestamp for sorting
+  amount: number;
+  method: PaymentMethod;
+  notes: string;
+}
 
 export type TransactionQueryObject = {
   page?: string;
@@ -20,12 +24,22 @@ export type TransactionQueryObject = {
   search?: string;
   type?: TransactionType;
   categoryId?: string;
-
   startDate?: string;
   endDate?: string;
-
   sortBy?: "amount" | "transactionDate" | "createdAt";
   sortOrder?: "asc" | "desc";
+};
+
+export type TransactionData = {
+  title: string;
+  categoryId: number;
+  type: TransactionType;
+  amount: number;
+  description?: string;
+  transactionDate: Date;
+  paymentMethod: PaymentMethod;
+  // merchant?: string;
+  // status?: TxStatus;
 };
 
 export type TransactionUpdateData = {
@@ -34,16 +48,12 @@ export type TransactionUpdateData = {
   amount?: number;
   description?: string | null;
   transactionDate?: Date;
+  paymentMethod?: PaymentMethod;
+  // merchant?: string;
+  // status?: TxStatus;
 };
-export type TransactionData = {
-    title:string;
-  categoryId: number;
-  type: TransactionType;
-  amount: number;
-  description?: string;
-  transactionDate: Date;
-  paymentMethodId:number
-};
+
+
 
 export interface TransactionCreateResponse {
   success: boolean;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DropBox } from "../../transactions/pages/TransactionPage";
+// import { DropBox } from "../../transactions/pages/TransactionPage";
 
 export default function PageHeader({
   name,
@@ -32,7 +32,7 @@ export default function PageHeader({
           </p>
         </div>
         <div className="fp-header-actions">
-          <DropBox
+          {/* <DropBox
             name="Period"
             optionArray={[
               { name: "This Month", value: "0" },
@@ -40,7 +40,7 @@ export default function PageHeader({
               { name: "1 year", value: "2" },
               { name: "All Time", value: "3" },
             ]}
-          />
+          /> */}
           <button className="fp-export-btn">Export Report</button>
         </div>
       </div>
