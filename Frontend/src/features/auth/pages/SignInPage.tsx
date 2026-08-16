@@ -9,6 +9,7 @@ import "../../../index.css";
 import "../../../styles/auth.css";
 import { LucideMoveRight, Zap } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
+import { GoogleSignInButton } from "../components/GoogleButton";
 
 export function SignInPage() {
   const [inputData, setInputData] = useState({
@@ -46,11 +47,7 @@ export function SignInPage() {
             className="bgLg1 font-semibold  cLg2 borderT2 btn-primary"
           />
           <Breaker name="OR" />
-          <Button
-            backImg={<FcGoogle size={24} />}
-            name="Continue with Google"
-            className="btn-primary bgW borderT1"
-          />
+          <GoogleSignInButton />
           <Breaker name="Sign in with email" />
 
           <InputWithLabel

@@ -13,6 +13,11 @@ export async function signup(data:SignupFomData):Promise<SignupRespone> {
     return response.data
 }
 
+export async function googleAuth(googleToken:string):Promise<SigninResponse> {
+    const response = await api.post("/auth/google", {googleToken})
+    return response.data
+}
+
 export async function refreshToken():Promise<RefreshResponse> {
     const response = await api.post("/auth/refresh")
     return response.data

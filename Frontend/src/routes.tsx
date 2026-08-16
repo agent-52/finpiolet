@@ -6,6 +6,7 @@ import { SignUpPage } from "./features/auth/pages/SignUpPage";
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
 import { GoalPage } from "./features/goals/pages/GoalPage";
 import TransactionPage from "./features/transactions/pages/TransactionPage";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 // import AnalyticsPage from "./pages/Analytics";
 
 // import SignUp from "./pages/auth/Signup";
@@ -19,11 +20,19 @@ const routes = [
     children: [
       {
         path: "/signin",
-        element: <SignInPage />,
+        element: (
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+            <SignInPage />
+          </GoogleOAuthProvider>
+        ),
       },
       {
         path: "/signup",
-        element: <SignUpPage />,
+        element: (
+          <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+            <SignUpPage />
+          </GoogleOAuthProvider>
+        ),
       },
     ],
   },
