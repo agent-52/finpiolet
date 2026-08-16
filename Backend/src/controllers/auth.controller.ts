@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import {
+  googleAuthService,
   logout,
   RefreshAccessToken,
   signIn,
@@ -34,6 +35,19 @@ const signinController = async (req: Request, res: Response) => {
     accessToken: signInResponse.accessToken,
   });
 };
+
+const googleAuthController = async (req:Request, res:Response) => {
+  const {googleToken} = req.body
+  // console.log("googleToken recieved in backed:- ", googleToken)
+  const googleAuthResponse = await googleAuthService(googleToken)
+
+  res.cookie("refreshToken", googleAuthResponse?.refreshToken)
+  return res.json({
+    success:true,
+    user:googleAuthResponse?.user,
+    accessToken:googleAuthResponse?.accessToken
+  })
+}
 
 const refreshController = async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refreshToken;
@@ -78,4 +92,5 @@ export {
   refreshController,
   logoutController,
   getCurrentUser,
+  googleAuthController
 };

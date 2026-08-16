@@ -2,6 +2,7 @@ import { Router } from "express";
 import { authMiddleware } from "../middleware/auth.middleware";
 import {
   getCurrentUser,
+  googleAuthController,
   logoutController,
   refreshController,
   signinController,
@@ -20,3 +21,5 @@ authRouter.post("/signin", asyncHandler(signinController));
 authRouter.post("/refresh", asyncHandler(refreshController));
 
 authRouter.post("/logout", asyncHandler(logoutController));
+
+authRouter.post("/google", asyncHandler(googleAuthController))
