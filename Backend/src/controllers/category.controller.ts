@@ -27,8 +27,8 @@ const createCategoryController = async (req: Request, res: Response) => {
       messsage: "user id does not exist",
     });
   }
-  const { name } = req.body;
-  const category = await createCategory(name, userId);
+  const { name, type } = req.body;
+  const category = await createCategory(name,type, userId);
   return res.status(201).json({
     success: true,
     category,

@@ -1,3 +1,4 @@
+import { CategoryType } from "../generated/prisma/enums";
 import {
   findCategoryById,
   repoCreateCategory,
@@ -14,7 +15,7 @@ async function getCategories(userId: number) {
   return categories;
 }
 
-async function createCategory(name: string, userId: number) {
+async function createCategory(name: string,type:CategoryType, userId: number) {
   const data = name.trim();
   if (!data.length || data.length > 50) {
     throw new ApiError(
@@ -29,7 +30,7 @@ async function createCategory(name: string, userId: number) {
     throw new ApiError(409, "category of same name already exist for the user");
   }
 
-  const category = repoCreateCategory(name, userId);
+  const category = repoCreateCategory(name,type, userId);
   return category;
 }
 

@@ -1,4 +1,5 @@
 import { prisma } from "../config/prisma";
+import { CategoryType } from "../generated/prisma/enums";
 
 async function repoGetCategories(userId?: number) {
   const categrories = await prisma.category.findMany({
@@ -9,11 +10,12 @@ async function repoGetCategories(userId?: number) {
   return categrories;
 }
 
-async function repoCreateCategory(name: string, userId?: number) {
+async function repoCreateCategory(name: string, type:CategoryType, userId?: number ) {
   const category = await prisma.category.create({
     data: {
       userId: userId ? userId : null,
       name,
+      type
     },
   });
 
