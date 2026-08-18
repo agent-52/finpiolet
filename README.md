@@ -6,9 +6,7 @@ The main idea behind FinPilot was not to build another expense tracker with a fe
 
 ## Live Demo
 
-**Frontend:** https://finpiolet.vercel.app
-
-**Backend:** Deployed on Render
+**Live:** https://finpiolet.vercel.app
 
 ## Features
 

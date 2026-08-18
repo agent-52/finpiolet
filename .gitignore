@@ -1,0 +1,15 @@
+TodoForBackend.txt
+.env
+.env.*
+!.env.example
+
+node_modules/
+dist/
+
+Frontend/node_modules/
+Frontend/dist/
+
+Backend/node_modules/
+Backend/dist/
+
+*.log
