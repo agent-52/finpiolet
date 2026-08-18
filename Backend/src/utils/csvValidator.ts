@@ -108,6 +108,10 @@ function validateTransaction(
 
             transactionDate: transaction.transactionDate,
 
+            title: transaction.title,
+
+            ...(transaction.paymentMethod && {paymentMehtod: transaction.paymentMethod}),
+
             ...(transaction.description && {description: transaction.description})
 
         }

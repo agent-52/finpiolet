@@ -23,6 +23,8 @@ function mapCsvRow(row: CsvRow): MappedTransaction {
             type = undefined;
     }
 
+
+
     return {
 
         amount: Number(row.Amount),
@@ -32,6 +34,10 @@ function mapCsvRow(row: CsvRow): MappedTransaction {
         type,
 
         transactionDate: new Date(row.Date),
+
+        title: row.title.trim(),
+
+        ...(row.paymentMehtod && {paymentMethod: row.paymentMehtod}),
 
         description: row.Description?.trim()
 
