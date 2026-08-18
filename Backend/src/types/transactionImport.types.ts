@@ -1,4 +1,4 @@
-import { TransactionType } from "../generated/prisma/enums";
+import { PaymentMethod, TransactionType } from "../generated/prisma/enums";
 
 
 export interface CsvRow {
@@ -6,6 +6,8 @@ export interface CsvRow {
     Category: string;
     Type: string;
     Amount: string;
+    title:string;
+    paymentMehtod?:PaymentMethod
     Description?: string;
 }
 
@@ -15,6 +17,8 @@ export interface MappedTransaction {
     category: string;
     type?: TransactionType | undefined;
     transactionDate: Date;
+    title:string;
+    paymentMethod?:PaymentMethod;
     description?: string | undefined;
 }
 
@@ -25,6 +29,8 @@ export interface CreateTransactionImportInput {
     categoryId: number;
     type: TransactionType;
     transactionDate: Date;
+    title:string;
+    paymentMehtod?:PaymentMethod;
     description?: string;
 }
 
