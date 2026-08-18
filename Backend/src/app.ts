@@ -5,6 +5,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { errorHandlerMiddleware } from "./middleware/error.middleware";
+import { env } from "./config/env";
 
 const app = express();
 
@@ -12,7 +13,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   credentials:true,
-  origin:"http://localhost:5173"
+  origin:env.FRONTEND_URL
 }));
 app.use(helmet());
 // app.use(morgan());

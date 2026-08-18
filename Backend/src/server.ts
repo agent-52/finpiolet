@@ -5,13 +5,14 @@ import { connectRedis } from "./config/redis";
 import { startCronJobs } from "./cron/cron";
 
 
+const PORT = env.PORT || 3000
 async function startServer() {
 
   await connectDb()
   await connectRedis()
   await startCronJobs()
-  app.listen(env.PORT, () => {
-    console.log("server running on port: ", env.PORT);
+  app.listen(PORT, () => {
+    console.log("server running on port: ", PORT);
   });
 
 }
