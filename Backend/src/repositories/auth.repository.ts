@@ -11,7 +11,7 @@ async function findUserByEmail(email: string) {
     });
     return user;
   } catch (error) {
-    throw new ApiError(500,"Error in running findUserByEmail function");
+    throw new ApiError(500,`Error in running findUserByEmail function :- ${error}`);
   }
 }
 
@@ -24,7 +24,7 @@ async function findUserById(id: number) {
     });
     return user;
   } catch (error) {
-    throw new ApiError(500, "Error in running findUserById function");
+    throw new ApiError(500, `Error in running findUserById function :- ${error}`);
   }
 }
 
