@@ -1,6 +1,6 @@
 import { prisma } from "../config/prisma";
 import { TransactionQueryObject } from "../controllers/transaction.controller";
-import { TransactionType } from "../generated/prisma/enums";
+import { PaymentMethod, TransactionType } from "../generated/prisma/enums";
 import { findCategoryById } from "../repositories/category.repository";
 import repository from "../repositories/transaction.repository";
 import { ApiError } from "../utils/ApiError";
@@ -13,6 +13,8 @@ async function createTransaction(
   type: TransactionType,
   amount: number,
   transactionDate: Date,
+  title:string,
+  paymentMethod:PaymentMethod,
   description?: string,
 ) {
   if (amount <= 0) {
@@ -44,6 +46,8 @@ async function createTransaction(
     type,
     amount,
     convertedTransactionDate,
+    title,
+    paymentMethod,
     description,
   );
 

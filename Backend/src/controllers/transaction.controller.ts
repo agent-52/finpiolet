@@ -8,6 +8,7 @@ import {
 import { TransactionType } from "../generated/prisma/enums";
 import { ApiError } from "../utils/ApiError";
 import { importTransactions } from "../services/transactionImport.service";
+import { title } from "node:process";
 
 const createTransactionController = async (req: Request, res: Response) => {
   const userId = req.user?.userId;
@@ -17,13 +18,15 @@ const createTransactionController = async (req: Request, res: Response) => {
     });
   }
 
-  const { categoryId, type, amount, description, transactionDate } = req.body;
+  const { categoryId, type, amount, description, transactionDate, title, paymentMethod } = req.body;
   const transaction = await createTransaction(
     userId,
     categoryId,
     type,
     amount,
     transactionDate,
+    title,
+    paymentMethod,
     description,
   );
 

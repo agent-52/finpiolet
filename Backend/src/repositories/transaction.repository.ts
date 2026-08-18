@@ -1,7 +1,7 @@
 import { prisma } from "../config/prisma";
 import { TransactionQueryObject } from "../controllers/transaction.controller";
 import { Prisma } from "../generated/prisma/client";
-import { Month, TransactionType } from "../generated/prisma/enums";
+import { Month, PaymentMethod, TransactionType } from "../generated/prisma/enums";
 
 async function createTransaction(
   userId: number,
@@ -9,7 +9,10 @@ async function createTransaction(
   type: TransactionType,
   amount: number,
   transactionDate: Date,
+  title:string,
+  paymentMethod?:PaymentMethod,
   description?: string,
+  
 ) {
   const transaction = await prisma.transaction.create({
     data: {
@@ -19,6 +22,8 @@ async function createTransaction(
       amount,
       description: description ?? null,
       transactionDate,
+      title,
+      paymentMethod:paymentMethod?? PaymentMethod.UPI
     },
   });
   return transaction;
